@@ -1,6 +1,6 @@
 export class Helpers {
 	/**
-	 * Generates a unique ID
+	 * Generats a unique ID
 	 * @returns {String}
 	 */
 	public static UID(): string {

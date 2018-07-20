@@ -1,0 +1,79 @@
+.App{
+  text-align: center;
+  font-size: 25px;
+  align-content: center;
+}
+
+.box-container {  
+  float: left;
+  border: 1px solid #999;  
+  background-color: antiquewhite;
+  width: 1023px;
+  height: 623px;
+}
+
+.entity-list {
+  float: left;  
+  border: 1px solid #999;  
+  margin-right: 10px;
+  background-color: antiquewhite;
+  width: 300px;
+  height: 623px;
+}
+
+.content{
+  float: left;
+  text-align: left;
+  font-size: 20px;
+}
+
+.box {
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  width: 200px;
+  height: 200px;
+  margin: 5px;
+  padding: 5px;
+  float: left;
+}
+
+.cursor {
+  cursor: move;
+}
+
+.no-cursor {
+  cursor: default;
+}
+
+.handle {
+  background: darkslategrey;
+  color: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  display: block;
+  margin-bottom: 10px;
+  padding: 3px 5px;
+  text-align: center;
+}
+
+.entity-item {
+  background: darkslategrey;
+  color: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  display: block;
+  margin: 10px 10px;
+  padding: 3px 5px;
+  text-align: center;
+}
+
+.attributes {
+  float: left;
+  margin: 0 0;
+}
+
+.attributes li {
+  list-style: none;
+  margin-left: -35px;
+}
