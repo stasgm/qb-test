@@ -17,5 +17,8 @@
   },
   "exclude": [
     "./dist"
+  ],
+  "typeRoots": [
+    "../node_modules/json-d-ts"
   ]
 }

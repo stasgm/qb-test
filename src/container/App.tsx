@@ -1,82 +1,23 @@
 import * as React from 'react';
 import Draggable from 'react-draggable';
-
+import * as ERModel from './erdata';
 import './App.css';
 
-interface IProps {
+type Props = {
   name?: string;
 }
 
-interface IAttribute {
-  id: number,
-  name: string,
-  type: string,
-}
-
-interface IEntity {
-  id: number,
-  name: string,
-  attributes: IAttribute[];
-}
-
 interface IEntityProps {
-  list: IEntity[],
+  list: ERModel.IEntity[],
 }
 
-const entityList: Array<IEntity> = [
-  {
-    id: 1,
-    name: 'Company',
-    attributes: [
-      {
-        id: 0,
-        name: 'ID',
-        type: 'string',
-      },
-    ]
-  },
-  {    
-    id: 2,
-    name: 'Department',
-    attributes: [
-      {
-        id: 0,
-        name: 'ID',
-        type: 'string',
-      },
-    ]
-  },
-  {    
-    id: 3,
-    name: 'People',
-    attributes: [
-      {
-        id: 0,
-        name: 'ID',
-        type: 'string',
-      },
-    ]    
-  },
-  {    
-    id: 4,
-    name: 'Account',
-    attributes: [
-      {
-        id: 0,
-        name: 'ID',
-        type: 'string',
-      },
-    ]
-  },  
-];
-
-const EntityBox: React.SFC<IProps> = () => (     
+const EntityBox: React.SFC<Props> = () => (     
   <Draggable 
     axis="both"
     defaultPosition = {{x: 0, y: 0}}
     grid={[25, 25]}
     handle=".handle"
-    bounds={{top: 0, left: 0, right: 800, bottom: 400}}
+    bounds={{top: 0, left: 0, right: 800, bottom: 280}}
   >
     <div className="box no-cursor">
       <div className="handle cursor">COMPANY</div>
@@ -102,19 +43,19 @@ const Entity: React.SFC<IEntityProps> = (props) => (
   </div>    
 );
 
-const EntityList: React.SFC<IProps> = () => (     
+const EntityList: React.SFC<Props> = () => (     
   <div>
-    <Entity list={entityList} />
+    <Entity list={ERModel.entityList} />
   </div>
 );
 
-class App extends React.Component<IProps, {}> {
+class App extends React.Component<Props, {}> {
   public render() {        
     return (
       <div className="App">
         <h1>GDMN: Query Builder</h1>
         <div className="qb-main">
-          <div className="entity-list"> 
+          <div className="entity-list "> 
             <EntityList />
           </div>
           <div className="box-container">
