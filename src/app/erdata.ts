@@ -22,13 +22,13 @@ export interface IAttribute {
 export interface IEntity {
     parent?: string,
     name: string,
-    lName: object,    
-    isAbstract: boolean,
+    lName?: object,    
+    isAbstract?: boolean,
     attributes?: IAttribute[],
     semCategories?: string,
 }
   
-export const entityList: Array<IEntity> = [
+export const entityList: IEntity[] = [
     {
         "name": "WG_HOLIDAY",
         "lName": {
