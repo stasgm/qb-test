@@ -15,7 +15,7 @@ class App extends React.Component<{}, {entity: object[]}> {
   }
 
   private addEntityHandle(id: number) : void {
-     this.setState({entity: [ ERModel.entityList[id] ]});
+     this.setState({entity: [...this.state.entity, ERModel.entityList[id]] });
   }
 
   public render() {        
