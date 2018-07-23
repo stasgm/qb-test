@@ -3,7 +3,6 @@ import { EntityList, EntityBox } from './components';
 import './App.css';
 
 class App extends React.Component<{}, { entity: object[] }> {
-
   public render() {
     return (
       <div className="App">

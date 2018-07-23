@@ -3,16 +3,16 @@ import { IEntity } from '../../model';
 import { entityAPI } from '../../api/entity';
 import { EntityBlock } from './EntityBlock';
 
-/* interface IEntityProps {
-  list: IEntity[],
-  addEntity: (id: number) => void,
-} */
-
 interface IState {
   entityList: IEntity[];
 }
 
 export class EntityList extends React.Component<{}, IState> {
+  constructor() {
+    super({});
+    this.addEntityHandle = this.addEntityHandle.bind(this);
+  }
+
   state = { entityList: [] };
 
   public componentDidMount() {
@@ -23,6 +23,7 @@ export class EntityList extends React.Component<{}, IState> {
   }
 
   private addEntityHandle(id: number): void {
+    console.log(id, this.state.entityList[id]);
     /*     this.setState({ 
           entityList: [...this.state.entityList]
         }); */

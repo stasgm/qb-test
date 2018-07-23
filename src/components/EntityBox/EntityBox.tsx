@@ -8,11 +8,11 @@ interface State {
 }
 
 export class EntityBox extends React.Component<{}, State> {
-
+  
   state = { entityList: [] };
 
   private deleteHandle(id: number): void {
-    
+    console.log(id);
   }
 
   public render() {
