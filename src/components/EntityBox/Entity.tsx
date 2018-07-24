@@ -5,7 +5,7 @@ import { AttributeList } from './AttributeList'
 
 export interface IEntityEvent {
   id: number,
-  onClick: (event: any) => void,
+  onDeleteEntity: (event: any) => void,
 }
 
 export const Entity: React.SFC<IEntity & IEntityEvent> = (props) => (
@@ -13,12 +13,14 @@ export const Entity: React.SFC<IEntity & IEntityEvent> = (props) => (
     axis="both"
     defaultPosition={{ x: 0, y: 0 }}
     grid={[25, 25]}
-    handle=".handle"
+    handle=".entity-box-handle-title"
   // bounds={{top: 0, left: 0, right: 1800, bottom: 1280}}
   >
-    <div className="box no-cursor">
-      <div className="handle">{props.name}</div>
-      <div onClick={() => props.onClick(props.id)}>[ X ]</div>
+    <div className="entity-box">
+      <div className="entity-box-handle">
+        <div className="entity-box-handle-title">{props.name}</div>
+        <div className="action-button" onClick={() => props.onDeleteEntity(props.id)}>X</div>
+      </div>  
       <AttributeList data={props.attributes || []} />
     </div>
   </Draggable>

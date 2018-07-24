@@ -6,7 +6,7 @@ interface IAttributeList {
 }
 
 export const AttributeList: React.SFC<IAttributeList> = (props) => (
-  <div className="content">
+  <div className="entity-box-content">
     <ul className="attributes">
       {
         props.data.map(i =>
