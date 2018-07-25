@@ -1,47 +1,31 @@
-import * as React from 'react';
-import { IEntity } from '../../model';
-import { entityAPI } from '../../api/entity';
-import { EntityBlock } from './EntityBlock';
+import React from "react";
+import shortid from "shortid";
+import { IEntity } from "../../model";
+import { EntityBlock } from "./EntityBlock";
 
-interface IState {
-  entityList: IEntity[];
+interface IProps {
+    list: IEntity[];
+    addEntity: (id: number) => void;
 }
 
-export class EntityList extends React.Component<{}, IState> {
-  constructor() {
-    super({});
-    this.addEntityHandle = this.addEntityHandle.bind(this);
-  }
-
-  state = { entityList: [] };
-
-  public componentDidMount() {
-    entityAPI.fetchMembers()
-      .then((entityList) => {
-        this.setState({ entityList });
-      });
-  }
-
-  private addEntityHandle(id: number): void {
-    console.log(id, this.state.entityList[id]);
-    /*     this.setState({ 
-          entityList: [...this.state.entityList]
-        }); */
-  }
-
-  public render() {
-    return (
-      <div>
-        {
-          this.state.entityList.map((item: IEntity, idx) =>
-            <EntityBlock
-              name={item.name}
-              onClick={this.addEntityHandle}
-              id={idx}
-            />
-          )
-        }
-      </div>
-    );
-  }
-};
+export class EntityList extends React.Component<IProps, any> {
+    public render() {
+        return (
+            <div>
+                <div className="el-filter">
+                    <input type="text" className="el-filter-input" />   
+                </div>
+                <div className="entity-list">
+                    {this.props.list.map((item: IEntity, idx) => (
+                        <EntityBlock
+                            name={item.name}
+                            onClick={this.props.addEntity}
+                            key={shortid.generate()}
+                            id={idx}
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+}

@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import Draggable from 'react-draggable';
 import { IEntity } from '../../model';
 import { AttributeList } from './AttributeList'
 
 export interface IEntityEvent {
   id: number,
-  onDeleteEntity: (event: any) => void,
+  onClickDelete: (event: any) => void,
 }
 
 export const Entity: React.SFC<IEntity & IEntityEvent> = (props) => (
@@ -19,7 +19,7 @@ export const Entity: React.SFC<IEntity & IEntityEvent> = (props) => (
     <div className="entity-box">
       <div className="entity-box-handle">
         <div className="entity-box-handle-title">{props.name}</div>
-        <div className="action-button" onClick={() => props.onDeleteEntity(props.id)}>X</div>
+        <div className="action-button" onClick={() => props.onClickDelete(props.id)}>X</div>
       </div>  
       <AttributeList data={props.attributes || []} />
     </div>

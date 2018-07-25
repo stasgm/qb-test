@@ -48,8 +48,10 @@
     "webpack-manifest-plugin": "^2.0.3"
   },
   "dependencies": {
+    "@types/shortid": "0.0.29",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-draggable": "^3.0.5"
+    "react-draggable": "^3.0.5",
+    "shortid": "^2.2.12"
   }
 }
