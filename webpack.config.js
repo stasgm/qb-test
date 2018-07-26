@@ -50,7 +50,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: [ 'style-loader', 'css-loader' ],
-        /*
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
@@ -62,6 +61,8 @@ module.exports = {
               localIdentName: isProduction ? '[hash:base64:5]' : '[local]__[hash:base64:5]'
             }
           },
+        ]
+          /*
           {
             loader: 'postcss-loader',
             options: {
