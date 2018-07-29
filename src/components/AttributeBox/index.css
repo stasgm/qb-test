@@ -1,0 +1,46 @@
+.right-box-container {
+  float: left;
+  /* border: 1px solid #999; */
+  background-color: #ffc879;
+  height: 500px;
+  width: 20%;
+}
+
+@media (max-width: 1021px) {
+  .right-box-container  {
+    width: 100%;
+}}
+
+.attribute-box {
+  background: #fff;
+  border: 1px solid attribute-#999;
+  border-radius: 3px;
+  width: 250px;
+  height: 200px;
+  margin: 5px;
+  padding: 5px;
+}
+
+.attribute-box-content {
+  height: 160px;
+  color: black;
+  text-align: left;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.attribute-box-handle {
+  background: darkslategrey;
+  border: 1px solid #999;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  padding: 3px 5px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.attribute-box-handle-title {
+  cursor: move;
+  width: 100%;
+}

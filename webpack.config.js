@@ -12,7 +12,7 @@ var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
   context: sourcePath,
   entry: {
     app: './index.tsx'
@@ -37,19 +37,23 @@ module.exports = {
     rules: [
       // .ts, .tsx
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)$/,
         use: [
           isProduction && {
             loader: 'babel-loader',
             options: { plugins: ['react-hot-loader/babel'] }
           },
-          'awesome-typescript-loader'
+          {
+            loader: 'ts-loader'
+          }
+          //'awesome-typescript-loader'
         ].filter(Boolean)
       },
       // css
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ],
+        use: ['style-loader', 'css-loader']
+        /*
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
@@ -60,9 +64,9 @@ module.exports = {
               importLoaders: 1,
               localIdentName: isProduction ? '[hash:base64:5]' : '[local]__[hash:base64:5]'
             }
-          },
-        ]
-          /*
+          }
+        ]*/
+        /*
           {
             loader: 'postcss-loader',
             options: {
@@ -80,11 +84,11 @@ module.exports = {
           }
         ]
         */
-      },
+      }
       // static assets
-      { test: /\.html$/, use: 'html-loader' },
+      /*  { test: /\.html$/, use: 'html-loader' },
       { test: /\.(png|svg)$/, use: 'url-loader?limit=10000' },
-      { test: /\.(jpg|gif)$/, use: 'file-loader' }
+      { test: /\.(jpg|gif)$/, use: 'file-loader' } */
     ]
   },
   optimization: {
@@ -126,7 +130,7 @@ module.exports = {
       disableDotRule: true
     },
     stats: 'minimal',
-    open: true,
+    open: true
   },
   node: {
     // workaround for webpack-dev-server issue

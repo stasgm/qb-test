@@ -1,27 +1,20 @@
-import React from "react";
-import shortid from "shortid";
-import { IEntity } from "../../model";
-import { Entity } from "./Entity";
+import React from 'react';
+import { IEntity } from '../../model';
+import { Entity } from './Entity';
 
 interface IProps {
-    list: IEntity[];
-    deleteEntity: (name: string) => void;
+  list: IEntity[];
+  deleteEntity: (id: string) => void;
 }
 
 export class EntityBox extends React.Component<IProps, any> {
-    public render() {
-        return (
-            <div>
-                {this.props.list.map((item: IEntity, idx: number) => (
-                    <Entity
-                        name={item.name}
-                        id={idx}
-                        key={shortid.generate()}
-                        onClickDelete={() => this.props.deleteEntity(item.name)}
-                        attributes={item.attributes}
-                    />
-                ))}
-            </div>
-        );
-    }
+  public render() {
+    return (
+      <div className="center-box-container">
+        {this.props.list.map((item: IEntity) => (
+          <Entity {...item} key={item.id} onClickDelete={this.props.deleteEntity} />
+        ))}
+      </div>
+    );
+  }
 }

@@ -1,4 +1,5 @@
 export interface IAttribute {
+  id?: string;
   name: string;
   type?: string;
   lName?: object;
@@ -21,6 +22,7 @@ export interface IAttribute {
 
 export interface IEntity {
   parent?: string;
+  id?: string;
   name: string;
   lName?: object;
   isAbstract?: boolean;

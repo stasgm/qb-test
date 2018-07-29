@@ -1,48 +1,63 @@
-import React from "react";
-import { EntityList, EntityBox } from "./components";
-import { IEntity } from "./model";
-import { entityAPI } from "./api/entity";
-import "./App.css";
+import React from 'react';
+import { EntityList, EntityBox, AttributeBox } from './components';
+import { IEntity, IAttribute } from './model';
+import { entityAPI } from './api/entity';
+import './App.css';
 
 interface IState {
   entities: IEntity[];
   filteredEntities: IEntity[];
   selectedEntities: IEntity[];
+  selectedAttributes: Array<{ name: String; attribute: IAttribute }>;
 }
 
-class App extends React.Component<any, IState> {
-  state = {
+export class App extends React.Component<any, IState> {
+  public state = {
     entities: [],
     filteredEntities: [],
-    selectedEntities: []
+    selectedEntities: [],
+    selectedAttributes: [{ name: 'Test', attribute: { name: 'test-attribute', id: '1' } }]
   };
 
   public componentDidMount() {
+    this.handleLoadMockEntities();
+  }
+
+  private handleLoadMockEntities = () => {
     entityAPI.fetchMembers().then(entities => {
       this.setState({ entities, filteredEntities: entities });
     });
-  }
+  };
 
-  private handleSelectEntity = (id: number) => {
-    this.setState({
-      selectedEntities: [
-        ...this.state.selectedEntities,
-        this.state.filteredEntities[id]
-      ]
+  private handleLoadEntities = () => {
+    entityAPI.fetchMembersAsync().then(entities => {
+      this.setState({ entities, filteredEntities: entities });
     });
   };
 
-  private handleDeleteEntity = (name: string) => {
+  private handleSelectEntity = (id: string) => {
     this.setState({
-      selectedEntities: this.state.selectedEntities.filter(
-        (i: IEntity) => i.name !== name
-      )
+      selectedEntities: [...this.state.selectedEntities, this.state.entities.filter((i: IEntity) => i.id === id)[0]]
+      // Переделать на поиск только 1 элемента
     });
   };
 
-  private handleFilterEntities = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  private handleDeleteEntity = (id: string) => {
+    // Наименование - unselect
+    this.setState({
+      selectedEntities: this.state.selectedEntities.filter((i: IEntity) => i.id !== id)
+    });
+  };
+
+  private handleDeleteAttribute = (id: string) => {
+    // Наименование - unselect
+    console.log(id);
+    this.setState({
+      selectedAttributes: this.state.selectedAttributes.filter((i: IAttribute) => i.id !== id)
+    });
+  };
+
+  private handleFilterEntities = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       filteredEntities: this.state.entities.filter((i: IEntity) =>
         i.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -53,25 +68,19 @@ class App extends React.Component<any, IState> {
   public render() {
     return (
       <div className="App">
-        <h1>GDMN: Query Builder</h1>
-        <div className="qb-main">
-          <div className="entity-list-box">
-            <EntityList
-              list={this.state.filteredEntities}
-              addEntity={this.handleSelectEntity}
-              filterEntities={this.handleFilterEntities}
-            />
-          </div>
-          <div className="box-container">
-            <EntityBox
-              list={this.state.selectedEntities}
-              deleteEntity={this.handleDeleteEntity}
-            />
-          </div>
+        <header className="Header">GDMN: Query Builder</header>
+        <div className="application-main" role="main">
+          <EntityList
+            list={this.state.filteredEntities}
+            addEntity={this.handleSelectEntity}
+            filterEntities={this.handleFilterEntities}
+            loadMockEntities={this.handleLoadMockEntities}
+            loadEntities={this.handleLoadEntities}
+          />
+          <EntityBox list={this.state.selectedEntities} deleteEntity={this.handleDeleteEntity} />
+          <AttributeBox list={this.state.selectedAttributes} deleteAttribute={this.handleDeleteAttribute} />
         </div>
       </div>
     );
   }
 }
-
-export default App;
