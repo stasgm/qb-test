@@ -2,6 +2,8 @@ import React from 'react';
 import { IAttribute } from '../../model';
 import { Attribute } from './Attribute';
 
+import './index.css';
+
 export interface IProps {
   deleteAttribute: (id: string) => void;
   list: Array<{ name: String; attribute: IAttribute }>;

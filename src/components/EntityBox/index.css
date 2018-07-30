@@ -1,7 +1,9 @@
 .center-box-container {
   float: left;
+  display: inline-flex;
+  flex-wrap: wrap;
   width: calc(80% - 270px);
-  background-color: antiquewhite;
+  background: antiquewhite;
   height: 500px;
   overflow: auto;
 }

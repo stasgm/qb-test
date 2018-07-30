@@ -3,9 +3,11 @@ import { IEntity } from '../../model';
 import { EntityBlock } from './EntityBlock';
 import { Filter } from './Filter';
 
+import './index.css';
+
 interface IProps {
   list: IEntity[];
-  isLoding: boolean;
+  isLoading: boolean;
   filterText: string;
   onAddEntity: (id: string) => void;
   onFilterEntities: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,7 +23,7 @@ export const EntityList: React.SFC<IProps> = props => (
     </div>
     <Filter value={props.filterText} onChange={props.onFilterEntities} />
     <div className="entity-list">
-      {props.isLoding ? (
+      {props.isLoading ? (
         <div className="loading-message">Чтение данных...</div>
       ) : props.list.length === 0 ? (
         <div className="loading-message">Совпадений не найдено</div>

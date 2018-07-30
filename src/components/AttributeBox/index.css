@@ -1,7 +1,7 @@
 .right-box-container {
   float: left;
   /* border: 1px solid #999; */
-  background-color: #ffc879;
+  background: #ffc879;
   height: 500px;
   width: 270px;
 }
@@ -9,11 +9,13 @@
 @media (max-width: 1021px) {
   .right-box-container  {
     width: 100%;
-}}
+    border-top: 1px solid #999;
+  }
+}
 
 .attribute-box {
   background: #fff;
-  border: 1px solid attribute-#999;
+  border: 1px solid #999;
   border-radius: 3px;
   width: 250px;
   height: 200px;
@@ -41,6 +43,6 @@
 }
 
 .attribute-box-handle-title {
-  cursor: move;
+  /* cursor: move; */
   width: 100%;
 }

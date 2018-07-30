@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.css';
 
 interface IProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

@@ -1,6 +1,8 @@
 import React from 'react';
 import { IEntity } from '../../model';
 
+import './index.css';
+
 interface IEntityEvent {
   onClick: (id: string) => void;
 }
