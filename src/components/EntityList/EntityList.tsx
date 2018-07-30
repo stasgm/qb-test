@@ -5,25 +5,28 @@ import { Filter } from './Filter';
 
 interface IProps {
   list: IEntity[];
+  isLoding: boolean;
   filterText: string;
-  addEntity: (id: string) => void;
-  filterEntities: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  loadMockEntities: () => void;
-  loadEntities: () => void;
+  onAddEntity: (id: string) => void;
+  onFilterEntities: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onLoadMockEntities: () => void;
+  onLoadEntities: () => void;
 }
 
 export const EntityList: React.SFC<IProps> = props => (
   <div className="left-box-container">
     <div className="load-buttons-container">
-      <button onClick={props.loadMockEntities}>Загрузить (тест) </button>
-      <button onClick={props.loadEntities}>Загрузить</button>
+      <button onClick={props.onLoadMockEntities}>Загрузить (тест) </button>
+      <button onClick={props.onLoadEntities}>Загрузить</button>
     </div>
-    <Filter value={props.filterText} onChange={props.filterEntities} />
+    <Filter value={props.filterText} onChange={props.onFilterEntities} />
     <div className="entity-list">
-      {props.list.length === 0 ? (
+      {props.isLoding ? (
         <div className="loading-message">Чтение данных...</div>
+      ) : props.list.length === 0 ? (
+        <div className="loading-message">Совпадений не найдено</div>
       ) : (
-        props.list.map((item: IEntity) => <EntityBlock {...item} onClick={props.addEntity} key={item.id} />)
+        props.list.map((item: IEntity) => <EntityBlock {...item} onClick={props.onAddEntity} key={item.id} />)
       )}
     </div>
   </div>

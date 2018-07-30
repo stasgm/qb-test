@@ -5,6 +5,7 @@ import { entityAPI } from './api/entity';
 import './App.css';
 
 interface IState {
+  isLoading: boolean;
   filterText: string;
   entities: IEntity[];
   filteredEntities: IEntity[];
@@ -12,8 +13,9 @@ interface IState {
   selectedAttributes: Array<{ name: String; attribute: IAttribute }>;
 }
 
-export class App extends React.Component<any, IState> {
+export class App extends React.PureComponent<any, IState> {
   public state = {
+    isLoading: false,
     filterText: '',
     entities: [],
     filteredEntities: [],
@@ -26,16 +28,19 @@ export class App extends React.Component<any, IState> {
   }
 
   private handleLoadMockEntities = () => {
-    entityAPI.fetchMembers().then(entities => {
+    entityAPI.fetchData().then(entities => {
       this.setState({ entities, filteredEntities: entities });
     });
   };
 
-  private handleLoadEntities = () => {
-    this.setState({ entities: [], filteredEntities: [] });
-    entityAPI.fetchMembersAsync().then(entities => {
-      this.setState({ entities, filteredEntities: entities });
+  private getData = () => {
+    entityAPI.fetchDataAsync().then(entities => {
+      this.setState({ isLoading: false, entities, filteredEntities: entities });
     });
+  };
+
+  private handleLoadEntities = () => {
+    this.setState({ isLoading: true, entities: [], filteredEntities: [] }, this.getData);
   };
 
   private handleSelectEntity = (id: string) => {
@@ -45,14 +50,14 @@ export class App extends React.Component<any, IState> {
     });
   };
 
-  private handleDeleteEntity = (id: string) => {
+  private handleUnselectEntity = (id: string) => {
     // Наименование - unselect
     this.setState({
       selectedEntities: this.state.selectedEntities.filter((i: IEntity) => i.id !== id)
     });
   };
 
-  private handleDeleteAttribute = (id: string) => {
+  private handleUnselectAttribute = (id: string) => {
     // Наименование - unselect
     console.log(id);
     this.setState({
@@ -76,14 +81,15 @@ export class App extends React.Component<any, IState> {
         <div className="application-main" role="main">
           <EntityList
             list={this.state.filteredEntities}
-            addEntity={this.handleSelectEntity}
-            filterEntities={this.handleFilterEntities}
-            loadMockEntities={this.handleLoadMockEntities}
-            loadEntities={this.handleLoadEntities}
+            isLoding={this.state.isLoading}
+            onAddEntity={this.handleSelectEntity}
+            onFilterEntities={this.handleFilterEntities}
+            onLoadMockEntities={this.handleLoadMockEntities}
+            onLoadEntities={this.handleLoadEntities}
             filterText={this.state.filterText}
           />
-          <EntityBox list={this.state.selectedEntities} deleteEntity={this.handleDeleteEntity} />
-          <AttributeBox list={this.state.selectedAttributes} deleteAttribute={this.handleDeleteAttribute} />
+          <EntityBox list={this.state.selectedEntities} onDeleteEntity={this.handleUnselectEntity} />
+          <AttributeBox list={this.state.selectedAttributes} onDeleteAttribute={this.handleUnselectAttribute} />
         </div>
       </div>
     );

@@ -4,7 +4,7 @@ import { entityList } from './mockData';
 
 const baseURL = 'http://gs.selfip.biz:47004';
 
-const fetchMembers = (): Promise<IEntity[]> => {
+const fetchData = (): Promise<IEntity[]> => {
   return Promise.resolve(entityList).then(el => {
     return el.map(i => {
       i.id = shortid.generate();
@@ -13,7 +13,7 @@ const fetchMembers = (): Promise<IEntity[]> => {
   });
 };
 
-const fetchMembersAsync = (): Promise<IEntity[]> => {
+const fetchDataAsync = (): Promise<IEntity[]> => {
   const ermodelsURL = `${baseURL}/er`;
 
   return fetch(ermodelsURL)
@@ -31,6 +31,6 @@ const mapToEntity = (entity: IEntity): IEntity => {
 };
 
 export const entityAPI = {
-  fetchMembers,
-  fetchMembersAsync
+  fetchData,
+  fetchDataAsync
 };

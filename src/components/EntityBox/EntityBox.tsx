@@ -4,7 +4,7 @@ import { Entity } from './Entity';
 
 interface IProps {
   list: IEntity[];
-  deleteEntity: (id: string) => void;
+  onDeleteEntity: (id: string) => void;
 }
 
 export class EntityBox extends React.Component<IProps, any> {
@@ -12,7 +12,7 @@ export class EntityBox extends React.Component<IProps, any> {
     return (
       <div className="center-box-container">
         {this.props.list.map((item: IEntity) => (
-          <Entity {...item} key={item.id} onClickDelete={this.props.deleteEntity} />
+          <Entity {...item} key={item.id} onClickDelete={this.props.onDeleteEntity} />
         ))}
       </div>
     );

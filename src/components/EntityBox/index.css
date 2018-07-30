@@ -1,10 +1,9 @@
 .center-box-container {
   float: left;
-  /* border: 1px solid #999; */
+  width: calc(80% - 270px);
   background-color: antiquewhite;
   height: 500px;
   overflow: auto;
-  width: 60%;
 }
 
 @media (max-width: 1021px) {
