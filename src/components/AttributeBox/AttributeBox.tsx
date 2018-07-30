@@ -12,7 +12,12 @@ export class AttributeBox extends React.Component<any, IProps> {
     return (
       <div className="right-box-container">
         {this.props.list.map((item: { name: String; attribute: IAttribute }) => (
-          <Attribute {...item.name} {...item} onClickDelete={this.props.deleteAttribute} key={item.attribute.id || ''}/>
+          <Attribute
+            {...item.name}
+            {...item}
+            onClickDelete={this.props.deleteAttribute}
+            key={item.attribute.id || ''}
+          />
         ))}
       </div>
     );

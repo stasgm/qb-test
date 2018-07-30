@@ -1,6 +1,7 @@
 import React from 'react';
 import { IEntity } from '../../model';
 import { EntityBlock } from './EntityBlock';
+import { Filter } from './Filter';
 
 interface IProps {
   list: IEntity[];
@@ -11,32 +12,19 @@ interface IProps {
   loadEntities: () => void;
 }
 
-export class EntityList extends React.Component<IProps, any> {
-  public render() {
-    return (
-      <div className="left-box-container">
-        <div className="load-buttons-container">
-          <button onClick={this.props.loadMockEntities}>Загрузить (тест) </button>
-          <button onClick={this.props.loadEntities}>Загрузить</button>
-        </div>
-        <div className="entity-filter">
-          <button className="action-button clear-filter">X</button>
-          <div className="inner">
-            <input
-              type="text"
-              className="entity-filter-input"
-              placeholder="Введите наименование"
-              onChange={this.props.filterEntities}
-              value={this.props.filterText}
-            />
-          </div>
-        </div>
-        <div className="entity-list">
-          {this.props.list.length === 0 ? <div className="loading-message">Чтение данных...</div> : this.props.list.map((item: IEntity) => (
-            <EntityBlock {...item} onClick={this.props.addEntity} key={item.id} />
-          ))}
-        </div>
-      </div>
-    );
-  }
-}
+export const EntityList: React.SFC<IProps> = props => (
+  <div className="left-box-container">
+    <div className="load-buttons-container">
+      <button onClick={props.loadMockEntities}>Загрузить (тест) </button>
+      <button onClick={props.loadEntities}>Загрузить</button>
+    </div>
+    <Filter value={props.filterText} onChange={props.filterEntities} />
+    <div className="entity-list">
+      {props.list.length === 0 ? (
+        <div className="loading-message">Чтение данных...</div>
+      ) : (
+        props.list.map((item: IEntity) => <EntityBlock {...item} onClick={props.addEntity} key={item.id} />)
+      )}
+    </div>
+  </div>
+);

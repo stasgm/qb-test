@@ -32,7 +32,7 @@ export class App extends React.Component<any, IState> {
   };
 
   private handleLoadEntities = () => {
-    this.setState({entities: [], filteredEntities: []});
+    this.setState({ entities: [], filteredEntities: [] });
     entityAPI.fetchMembersAsync().then(entities => {
       this.setState({ entities, filteredEntities: entities });
     });
@@ -62,7 +62,8 @@ export class App extends React.Component<any, IState> {
 
   private handleFilterEntities = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      filterText: event.target.value, filteredEntities: this.state.entities.filter((i: IEntity) =>
+      filterText: event.target.value,
+      filteredEntities: this.state.entities.filter((i: IEntity) =>
         i.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
     });
