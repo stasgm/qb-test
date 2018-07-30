@@ -5,6 +5,7 @@ import { entityAPI } from './api/entity';
 import './App.css';
 
 interface IState {
+  filterText: string;
   entities: IEntity[];
   filteredEntities: IEntity[];
   selectedEntities: IEntity[];
@@ -13,6 +14,7 @@ interface IState {
 
 export class App extends React.Component<any, IState> {
   public state = {
+    filterText: '',
     entities: [],
     filteredEntities: [],
     selectedEntities: [],
@@ -30,6 +32,7 @@ export class App extends React.Component<any, IState> {
   };
 
   private handleLoadEntities = () => {
+    this.setState({entities: [], filteredEntities: []});
     entityAPI.fetchMembersAsync().then(entities => {
       this.setState({ entities, filteredEntities: entities });
     });
@@ -59,7 +62,7 @@ export class App extends React.Component<any, IState> {
 
   private handleFilterEntities = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      filteredEntities: this.state.entities.filter((i: IEntity) =>
+      filterText: event.target.value, filteredEntities: this.state.entities.filter((i: IEntity) =>
         i.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
     });
@@ -76,6 +79,7 @@ export class App extends React.Component<any, IState> {
             filterEntities={this.handleFilterEntities}
             loadMockEntities={this.handleLoadMockEntities}
             loadEntities={this.handleLoadEntities}
+            filterText={this.state.filterText}
           />
           <EntityBox list={this.state.selectedEntities} deleteEntity={this.handleDeleteEntity} />
           <AttributeBox list={this.state.selectedAttributes} deleteAttribute={this.handleDeleteAttribute} />

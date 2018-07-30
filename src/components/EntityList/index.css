@@ -1,6 +1,5 @@
 .left-box-container {
   float: left;
-/*   border: 1px solid #999; */
   background-color: #ffc879;
   height: 500px;
   width: 20%;
@@ -29,6 +28,11 @@ button {
   font-size: 20px;
 }
 
+.loading-message {
+  padding: 5px 5px 0px 5px;
+  color: black;
+}
+
 .load-buttons-container > button {
   width: 120px;
   height: 35px;
@@ -47,31 +51,28 @@ button:active {
   margin: 5px;
 }
 
-.entity-filter .inner {
+.inner {
+  padding-right: 5px;
   overflow: hidden;
 }
 
-.entity-filter input {
+.entity-filter-input {
   width: 100%;
   height: 20px;
-  padding: 5px;
-  display: block;
+  padding: 4px 0px 4px;
   border: #69c 1px solid;
 }
 
-.entity-filter .clear-filter {
+.clear-filter {
   height: 30px;
   float: right;
-  margin-left: 3px;
 }
 
 /*   EntityList   */
 
 .entity-list {
   height: 405px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  /* width: 99%; */
+  overflow-y: auto;
 }
 
 .entity-container {
