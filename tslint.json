@@ -12,7 +12,7 @@
     "no-console": false,
     "no-default-export": true,
     "no-implicit-dependencies": false,
-    "no-submodule-imports": [true, "@src", "@core", "@material-ui/core", "@material-ui/icons"],
+    "no-submodule-imports": true,
     "no-unused-expression": true,
     "no-var-requires": false,
     "object-literal-sort-keys": false,

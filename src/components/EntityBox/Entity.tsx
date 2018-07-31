@@ -3,6 +3,8 @@ import Draggable from 'react-draggable';
 import { IEntity } from '../../model';
 import { AttributeList } from './AttributeList';
 
+import './index.css';
+
 export interface IEntityEvent {
   onClickDelete: (id: string) => void;
 }

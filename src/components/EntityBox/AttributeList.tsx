@@ -2,6 +2,8 @@ import React from 'react';
 import shortid from 'shortid';
 import { IAttribute } from '../../model';
 
+import './index.css';
+
 interface IAttributeList {
   data: IAttribute[];
 }

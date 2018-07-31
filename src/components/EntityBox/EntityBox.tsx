@@ -2,6 +2,8 @@ import React from 'react';
 import { IEntity } from '../../model';
 import { Entity } from './Entity';
 
+import './index.css';
+
 interface IProps {
   list: IEntity[];
   onDeleteEntity: (id: string) => void;
