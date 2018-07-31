@@ -3,6 +3,7 @@ import './index.css';
 
 interface IProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClearFilter: () => void;
   value: string;
 }
 
