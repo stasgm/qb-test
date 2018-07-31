@@ -75,7 +75,7 @@ export class App extends React.PureComponent<any, IState> {
   };
 
    private handleClearFilter = () => {
-    this.setState({filterText: ''});
+    this.setState({filterText: '', filteredEntities: this.state.entities});
   }
 
   public render() {
@@ -91,7 +91,6 @@ export class App extends React.PureComponent<any, IState> {
             onClearFilter={this.handleClearFilter}
             onLoadMockEntities={this.handleLoadMockEntities}
             onLoadEntities={this.handleLoadEntities}
-            onClearFilter={this.handleClearFilter}
             filterText={this.state.filterText}
           />
           <EntityBox list={this.state.selectedEntities} onDeleteEntity={this.handleUnselectEntity} />

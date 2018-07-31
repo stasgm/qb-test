@@ -14,7 +14,6 @@ interface IProps {
   onClearFilter: () => void;
   onLoadMockEntities: () => void;
   onLoadEntities: () => void;
-  onClearFilter: () => void;
 }
 
 export const EntityList: React.SFC<IProps> = props => (
