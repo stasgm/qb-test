@@ -74,6 +74,13 @@ export class App extends React.PureComponent<any, IState> {
     });
   };
 
+  private handleClearFilter = () => {
+    this.setState({
+      filterText: '',
+      filteredEntities: this.state.entities
+    });
+  };
+
   public render() {
     return (
       <div className="App">
@@ -83,7 +90,8 @@ export class App extends React.PureComponent<any, IState> {
             list={this.state.filteredEntities}
             isLoding={this.state.isLoading}
             onAddEntity={this.handleSelectEntity}
-            onFilterEntities={this.handleFilterEntities}
+            onChangeFilter={this.handleFilterEntities}
+            onClearFilter={this.handleClearFilter}
             onLoadMockEntities={this.handleLoadMockEntities}
             onLoadEntities={this.handleLoadEntities}
             filterText={this.state.filterText}

@@ -8,7 +8,8 @@ interface IProps {
   isLoding: boolean;
   filterText: string;
   onAddEntity: (id: string) => void;
-  onFilterEntities: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeFilter: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClearFilter: () => void;
   onLoadMockEntities: () => void;
   onLoadEntities: () => void;
 }
@@ -19,7 +20,7 @@ export const EntityList: React.SFC<IProps> = props => (
       <button onClick={props.onLoadMockEntities}>Загрузить (тест) </button>
       <button onClick={props.onLoadEntities}>Загрузить</button>
     </div>
-    <Filter value={props.filterText} onChange={props.onFilterEntities} />
+    <Filter value={props.filterText} onChangeFilter={props.onChangeFilter} onClearFilter={props.onClearFilter}/>
     <div className="entity-list">
       {props.isLoding ? (
         <div className="loading-message">Чтение данных...</div>
