@@ -88,7 +88,7 @@ export class App extends React.PureComponent<any, IState> {
         <div className="application-main" role="main">
           <EntityList
             list={this.state.filteredEntities}
-            isLoding={this.state.isLoading}
+            isLoading={this.state.isLoading}
             onAddEntity={this.handleSelectEntity}
             onChangeFilter={this.handleFilterEntities}
             onClearFilter={this.handleClearFilter}

@@ -10,15 +10,18 @@
 }
 
 .action-button {
-  width: 30px;
   cursor: pointer;
   user-select: none; /* Standard */
 }
 
 .action-button:hover {
-  background: peru;
+  color: peru;
 }
 
 .action-button:active {
-  background: saddlebrown;
+  color: saddlebrown;
+}
+
+.entity-container .action-button {
+  margin-top: -2px;
 }
