@@ -22,7 +22,7 @@ export const EntityList: React.SFC<IProps> = props => (
       <button onClick={props.onLoadMockEntities}>Загрузить (тест) </button>
       <button onClick={props.onLoadEntities}>Загрузить</button>
     </div>
-    <Filter value={props.filterText} onChangeFilter={props.onChangeFilter} onClearFilter={props.onClearFilter}/>
+    <Filter value={props.filterText} onChangeFilter={props.onChangeFilter} onClearFilter={props.onClearFilter} />
     <div className="entity-list">
       {props.isLoading ? (
         <div className="loading-message">Чтение данных...</div>

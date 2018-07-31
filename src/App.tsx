@@ -51,14 +51,12 @@ export class App extends React.PureComponent<any, IState> {
   };
 
   private handleUnselectEntity = (id: string) => {
-    // Наименование - unselect
     this.setState({
       selectedEntities: this.state.selectedEntities.filter((i: IEntity) => i.id !== id)
     });
   };
 
   private handleUnselectAttribute = (id: string) => {
-    // Наименование - unselect
     console.log(id);
     this.setState({
       selectedAttributes: this.state.selectedAttributes.filter((i: IAttribute) => i.id !== id)
@@ -74,9 +72,9 @@ export class App extends React.PureComponent<any, IState> {
     });
   };
 
-   private handleClearFilter = () => {
-    this.setState({filterText: '', filteredEntities: this.state.entities});
-  }
+  private handleClearFilter = () => {
+    this.setState({ filterText: '', filteredEntities: this.state.entities });
+  };
 
   public render() {
     return (

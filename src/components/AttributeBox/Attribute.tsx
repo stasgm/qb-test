@@ -9,14 +9,14 @@ export interface IEntityEvent {
 }
 
 export const Attribute: React.SFC<{ name: String; attribute: IAttribute } & IEntityEvent> = props => (
-  <Draggable axis="none" defaultPosition={{ x: 0, y: 0 }} >
+  <Draggable axis="none" defaultPosition={{ x: 0, y: 0 }}>
     <div className="attribute-box">
       <div className="attribute-box-handle">
         <div className="attribute-box-handle-title">
           [ {props.name} ] : {props.attribute.name} : : {props.attribute.id}
         </div>
         <div className="action-button" onClick={() => props.onClickDelete(props.attribute.id || '')}>
-          <i className="fas fa-times"></i>
+          <i className="fas fa-times" />
         </div>
       </div>
     </div>

@@ -22,9 +22,11 @@ export const Filter: React.SFC<IProps> = props => (
           value={props.value}
         />
       </div>
-      {props.value && <button className="filter-clear" onClick={props.onClearFilter}>
-        <i className="fas fa-times" />
-      </button>}
+      {props.value && (
+        <button className="filter-clear" onClick={props.onClearFilter}>
+          <i className="fas fa-times" />
+        </button>
+      )}
     </div>
   </div>
 );
