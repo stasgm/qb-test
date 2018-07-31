@@ -2,22 +2,29 @@ import React from 'react';
 import './index.css';
 
 interface IProps {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeFilter: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClearFilter: () => void;
   value: string;
 }
 
 export const Filter: React.SFC<IProps> = props => (
-  <div className="entity-filter">
-    <button className="action-button clear-filter">X</button>
+  <div className="filter">
     <div className="inner">
-      <input
-        type="text"
-        className="entity-filter-input"
-        placeholder="Введите наименование"
-        onChange={props.onChange}
-        value={props.value}
-      />
+      <div className="search-svg">
+        <i className="fas fa-search"></i>
+      </div>
+      <div className="filter-textbox">
+        <input
+          type="text"
+          className="filter-input"
+          placeholder="Введите наименование"
+          onChange={props.onChangeFilter}
+          value={props.value}
+        />
+      </div>
+      {props.value && <button className="filter-clear" onClick={props.onClearFilter}>
+        <i className="fas fa-times"></i>
+      </button>}
     </div>
   </div>
 );

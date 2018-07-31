@@ -29,13 +29,13 @@ export class App extends React.PureComponent<any, IState> {
 
   private handleLoadMockEntities = () => {
     entityAPI.fetchData().then(entities => {
-      this.setState({ filterText: '', entities, filteredEntities: entities });
+      this.setState({ entities, filteredEntities: entities });
     });
   };
 
   private getData = () => {
     entityAPI.fetchDataAsync().then(entities => {
-      this.setState({ filterText: '', isLoading: false, entities, filteredEntities: entities });
+      this.setState({ isLoading: false, entities, filteredEntities: entities });
     });
   };
 
@@ -51,12 +51,14 @@ export class App extends React.PureComponent<any, IState> {
   };
 
   private handleUnselectEntity = (id: string) => {
+    // Наименование - unselect
     this.setState({
       selectedEntities: this.state.selectedEntities.filter((i: IEntity) => i.id !== id)
     });
   };
 
   private handleUnselectAttribute = (id: string) => {
+    // Наименование - unselect
     console.log(id);
     this.setState({
       selectedAttributes: this.state.selectedAttributes.filter((i: IAttribute) => i.id !== id)
@@ -85,7 +87,8 @@ export class App extends React.PureComponent<any, IState> {
             list={this.state.filteredEntities}
             isLoading={this.state.isLoading}
             onAddEntity={this.handleSelectEntity}
-            onFilterEntities={this.handleFilterEntities}
+            onChangeFilter={this.handleFilterEntities}
+            onClearFilter={this.handleClearFilter}
             onLoadMockEntities={this.handleLoadMockEntities}
             onLoadEntities={this.handleLoadEntities}
             onClearFilter={this.handleClearFilter}

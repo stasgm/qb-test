@@ -10,7 +10,7 @@
 
 @media (max-width: 1021px) {
   .center-box-container {
-    width: 75%;
+    width: calc(100% - 270px);
 }}
 
 .entity-box {
@@ -24,7 +24,7 @@
 }
 
 .entity-box-content {
-  height: 160px;
+  height: 155px;
   color: black;
   text-align: left;
   overflow-y: scroll;
@@ -35,7 +35,7 @@
   background: darkslategrey;
   border: 1px solid #999;
   border-radius: 3px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   padding: 3px 5px;
   text-align: center;
   display: flex;
@@ -54,6 +54,6 @@
 
 .attributes li {
   list-style: none;
-  margin-left: -35px;
+  margin-left: 8px;
   font-size: 16px;
 }
