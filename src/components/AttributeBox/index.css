@@ -1,9 +1,12 @@
 .right-box-container {
   float: left;
-  /* border: 1px solid #999; */
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
   background: #ffc879;
   height: 500px;
   width: 270px;
+  overflow: auto;
 }
 
 @media (max-width: 1021px) {

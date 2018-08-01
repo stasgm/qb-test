@@ -2,6 +2,7 @@
   float: left;
   display: inline-flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   width: calc(80% - 270px);
   background: antiquewhite;
   height: 500px;

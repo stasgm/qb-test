@@ -5,7 +5,7 @@ import { entityAPI } from './api/entity';
 import './App.css';
 
 interface IState {
-  isLoading: boolean;
+  loadingData: boolean;
   filterText: string;
   entities: IEntity[];
   filteredEntities: IEntity[];
@@ -15,12 +15,16 @@ interface IState {
 
 export class App extends React.PureComponent<any, IState> {
   public state = {
-    isLoading: false,
+    loadingData: false,
     filterText: '',
     entities: [],
     filteredEntities: [],
     selectedEntities: [],
-    selectedAttributes: [{ name: 'Test', attribute: { name: 'test-attribute', id: '1' } }]
+    selectedAttributes: [
+      { name: 'Test', attribute: { name: 'test-attribute', id: '1' } },
+      { name: 'gd_inna', attribute: { name: 'vsc-theme', id: '1' } },
+      { name: 'gd_stas', attribute: { name: 'drone', id: '1' } }
+    ]
   };
 
   public componentDidMount() {
@@ -35,12 +39,12 @@ export class App extends React.PureComponent<any, IState> {
 
   private getData = () => {
     entityAPI.fetchDataAsync().then(entities => {
-      this.setState({ isLoading: false, entities, filteredEntities: entities });
+      this.setState({ loadingData: false, entities, filteredEntities: entities });
     });
   };
 
   private handleLoadEntities = () => {
-    this.setState({ isLoading: true, entities: [], filteredEntities: [] }, this.getData);
+    this.setState({ loadingData: true, entities: [], filteredEntities: [] }, this.getData);
   };
 
   private handleSelectEntity = (id: string) => {
@@ -83,7 +87,7 @@ export class App extends React.PureComponent<any, IState> {
         <div className="application-main" role="main">
           <EntityList
             list={this.state.filteredEntities}
-            isLoading={this.state.isLoading}
+            loadingData={this.state.loadingData}
             onAddEntity={this.handleSelectEntity}
             onChangeFilter={this.handleFilterEntities}
             onClearFilter={this.handleClearFilter}

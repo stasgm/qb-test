@@ -9,7 +9,7 @@ interface IProps {
   onDeleteEntity: (id: string) => void;
 }
 
-export class EntityBox extends React.Component<IProps, any> {
+export class EntityBox extends React.PureComponent<IProps> {
   public render() {
     return (
       <div className="center-box-container">
