@@ -48,10 +48,11 @@ export class App extends React.PureComponent<any, IState> {
   };
 
   private handleSelectEntity = (id: string) => {
-    this.setState({
-      selectedEntities: [...this.state.selectedEntities, this.state.entities.filter((i: IEntity) => i.id === id)[0]]
-      // Переделать на поиск только 1 элемента
-    });
+    const selectedEntity = this.state.entities.find((i: IEntity) => i.id === id);
+
+    if (selectedEntity) {
+      this.setState({ selectedEntities: [...this.state.selectedEntities, selectedEntity] });
+    }
   };
 
   private handleUnselectEntity = (id: string) => {

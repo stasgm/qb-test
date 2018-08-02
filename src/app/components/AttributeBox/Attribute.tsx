@@ -1,6 +1,6 @@
 import React from 'react';
 import Draggable from 'react-draggable';
-import { IAttribute } from '../../model';
+import { IAttribute } from '@src/app/model';
 
 import './index.css';
 

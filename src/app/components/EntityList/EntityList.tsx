@@ -1,5 +1,5 @@
 import React from 'react';
-import { IEntity } from '../../model';
+import { IEntity } from '@src/app/model';
 import { EntityBlock } from './EntityBlock';
 import { Filter } from './Filter';
 

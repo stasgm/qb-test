@@ -2,7 +2,7 @@ import shortid from 'shortid';
 import { IEntity } from '../../model';
 import { entityList } from './mockData';
 
-const config = require('configFile'); // FIXME import config from 'configFile';
+import config from '../../../../configs/config.json';
 
 const baseURL = `${config.server.http.host}:${config.server.http.port}`;
 

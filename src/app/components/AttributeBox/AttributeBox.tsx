@@ -1,5 +1,5 @@
 import React from 'react';
-import { IAttribute } from '../../model';
+import { IAttribute } from '@src/app/model';
 import { Attribute } from './Attribute';
 
 import './index.css';

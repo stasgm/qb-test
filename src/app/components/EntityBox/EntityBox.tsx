@@ -1,5 +1,5 @@
 import React from 'react';
-import { IEntity } from '../../model';
+import { IEntity } from '@src/app/model';
 import { Entity } from './Entity';
 
 import './index.css';
