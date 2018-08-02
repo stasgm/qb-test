@@ -2,7 +2,9 @@ import shortid from 'shortid';
 import { IEntity } from '../../model';
 import { entityList } from './mockData';
 
-const baseURL = 'http://gs.selfip.biz:47004';
+const config = require('configFile'); // FIXME import config from 'configFile';
+
+const baseURL = `${config.server.http.host}:${config.server.http.port}`;
 
 const fetchData = (): Promise<IEntity[]> => {
   return Promise.resolve(entityList).then(el => {
@@ -14,7 +16,7 @@ const fetchData = (): Promise<IEntity[]> => {
 };
 
 const fetchDataAsync = (): Promise<IEntity[]> => {
-  const ermodelsURL = `${baseURL}/er`;
+  const ermodelsURL = `${baseURL}${config.server.paths.er}`;
 
   return fetch(ermodelsURL)
     .then(response => response.json())
