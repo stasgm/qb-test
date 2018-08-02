@@ -1,21 +1,31 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "jsx": "react",
-    "target": "es2017",
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationDir": "./dist/definitions",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "lib": ["es2017", "dom"],
+    "module": "esnext",
     "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
-    "allowSyntheticDefaultImports": true
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "outDir": "./build",
+    "paths": {
+      "@src/*": ["src/*"]
+    },
+    "rootDir": "src",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5"
   },
-  "exclude": ["./dist"],
-  "typeRoots": ["../node_modules/json-d-ts"]
+  "exclude": [
+    "build",
+    "configs",
+    "dist",
+    "node_modules",
+    "scripts"
+  ]
 }
