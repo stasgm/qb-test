@@ -100,7 +100,7 @@ button:active {
   width: 80%;
 }
 
-.fa-search, .fa-times {
+.fa-search, .filter .fa-times {
   color: gray;
   padding: 7px;
 }

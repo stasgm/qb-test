@@ -25,3 +25,8 @@
 .entity-container .action-button {
   margin-top: -2px;
 }
+
+.fa-times {
+  color: white;
+  padding: 0 2px 2px 0;
+}

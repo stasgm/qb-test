@@ -16,7 +16,7 @@ export const Attribute: React.SFC<{ name: String; attribute: IAttribute } & IEnt
           [ {props.name} ] : {props.attribute.name} : : {props.attribute.id}
         </div>
         <div className="action-button" onClick={() => props.onClickDelete(props.attribute.id || '')}>
-          <i className="fas fa-times"></i>
+          <i className="fas fa-times fa-xs"></i>
         </div>
       </div>
     </div>
