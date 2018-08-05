@@ -1,16 +1,21 @@
 .left-box-container {
-  float: left;
-  background-color: #ffc879;
-  height: 500px;
-  width: 20%;
-  min-width: 270px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #f5f5f5;
+  border: #e8e8e8 solid;
+  border-width: 0 1px 0 0;
+  width: 300px;
   padding: 6px;
 }
 
-@media (max-width: 1021px) {
-  .left-box-container  {
-     min-width: 270px;
-  }
+.qb-logo {
+  padding: 10px;
+  border-bottom: 1px #e8e8e8 solid;
+  color: #333;
+  font-size: 20px;
+  margin: 0;
 }
 
 /* Load block */
@@ -23,7 +28,7 @@
 
 button {
   color: #fff;
-  background-color: darkslategrey;
+  background-color: #516873;
   border: 1px solid #999;
   border-radius: 3px;
   font-size: 16px;
@@ -76,20 +81,35 @@ button:active {
 }
 
 /*   EntityList   */
-
 .entity-list {
-  height: 405px;
+  height: 50%;
+  margin: 5px;
   overflow-y: auto;
 }
 
 .entity-container {
-  background: darkslategrey;
+  background: #516873;
   border: 1px solid #999;
   border-radius: 3px;
   margin: 5px 5px;
   padding: 5px 5px;
   display: flex;
   justify-content: space-between;
+}
+
+.entity-item {
+  color: #000000;
+  padding: 3px 0px 3px 0;
+  user-select: none;
+}
+
+.checkmark {
+  height: 20px;
+  width: 20px;
+}
+
+.entity-item label {
+  padding-left: 5px;
 }
 
 .entity-title {

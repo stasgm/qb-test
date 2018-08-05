@@ -6,22 +6,6 @@ import config from '../../../../configs/config.json';
 
 const baseURL = `${config.server.http.host}:${config.server.http.port}`;
 
-const fetchData = (): Promise<IEntity[]> => {
-  return Promise.resolve(entityList).then(el => {
-    return el.map(i => {
-      i.id = shortid.generate();
-      return i;
-    });
-  });
-};
-
-const fetchDataAsync = (): Promise<IEntity[]> => {
-  const ermodelsURL = `${baseURL}${config.server.paths.er}`;
-
-  return fetch(ermodelsURL)
-    .then(response => response.json())
-    .then(mapToEntities);
-};
 
 const mapToEntities = (entities: { entities: IEntity[] }): IEntity[] => {
   return entities.entities.map(mapToEntity);
@@ -32,7 +16,34 @@ const mapToEntity = (entity: IEntity): IEntity => {
   return entity;
 };
 
+const fetchMockData = (): Promise<IEntity[]> => {
+  return Promise.resolve(entityList).then(el => {
+    return el.map(i => {
+      i.id = shortid.generate();
+      return i;
+    });
+  });
+};
+
+const fetchData = async(): Promise<IEntity[]> => {
+  const ermodelsURL = `${baseURL}${config.server.paths.er}`;
+  const response = await fetch(ermodelsURL);
+  if (!response.ok) throw new Error(response.statusText);
+  const entities: IEntity[] = await response.json();
+  // response = await mapToEntities;
+  return mapToEntities({entities});
+};
+
+/* const fetchDataAsync = (): Promise<IEntity[]> => {
+  const ermodelsURL = `${baseURL}${config.server.paths.er}`;
+
+  return fetch(ermodelsURL)
+    .then(response => response.json())
+    .then(mapToEntities);
+}; */
+
+
 export const entityAPI = {
   fetchData,
-  fetchDataAsync
+  fetchMockData
 };

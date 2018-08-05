@@ -9,6 +9,7 @@ export interface IAttribute {
   sequence?: string;
   minValue?: any;
   maxValue?: any;
+  minLength? :number;
   maxLength?: number;
   autoTrim?: boolean;
   defaultValue?: any;

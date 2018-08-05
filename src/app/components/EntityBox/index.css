@@ -1,23 +1,25 @@
 .center-box-container {
   float: left;
+  /* display: block; */
+  margin: 0 auto;
   display: inline-flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  width: calc(80% - 270px);
-  background: antiquewhite;
-  height: 500px;
-  overflow: auto;
+  padding-left: 300px;
+  /* width: calc(80% - 270px); */
+  background: #fff;
+/*   height: 500px;
+  overflow: auto; */
 }
 
-@media (max-width: 1021px) {
+/* @media (max-width: 1021px) {
   .center-box-container {
     width: calc(100% - 270px);
-}}
+}} */
 
 .entity-box {
-  background: #fff;
-  border: 1px solid #999;
-  border-radius: 3px;
+  background: #f6f6f6;
+  border: #e5e5e5 solid 1px;
   width: 250px;
   height: 200px;
   margin: 5px;
@@ -33,7 +35,7 @@
 }
 
 .entity-box-handle {
-  background: darkslategrey;
+  background: #516873;
   border: 1px solid #999;
   border-radius: 3px;
   margin-bottom: 6px;

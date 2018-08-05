@@ -30,3 +30,8 @@ export const Filter: React.SFC<IProps> = props => (
     </div>
   </div>
 );
+
+/* const onChangeInput = (props: IProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  props.onChangeFilter(e.target.name, e.target.value);
+};
+ */
