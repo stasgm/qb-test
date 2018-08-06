@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactEventHandler } from 'react';
 import { IAttribute } from '@src/app/model';
 import { Attribute } from './Attribute';
 
@@ -53,15 +53,38 @@ export class AttributeBox extends React.Component<any, IState> {
     ]
   };
 
+  private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newAttributeList: IAttributeParams[] = this.state.attributeList.map((item: IAttributeParams) => item.id === id ? {...item, visible: event.target.checked} : item);
+    this.setState({ attributeList: newAttributeList });
+  };
+
+  private handleVisibleChange =(e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+  }
+
+
   public render() {
     return (
-      <div className="right-box-container">
-        {this.state.attributeList.map((item: IAttributeParams) => (
-          <Attribute
-            {...item}
-            /* onClickDelete={this.props.deleteAttribute} */ key={item.id!}
-          />
-        ))}
+      <div className="bottom-box-container">
+        <table>
+          <thead>
+            <tr className="header">
+              <th>Visible</th>
+              <th>Expression</th>
+              <th>Field alias</th>
+              <th>Sort type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.attributeList.map((item: IAttributeParams) => (
+              <Attribute
+                {...item}
+                onChange={this.handleChange(item.id)}
+                /* onClickDelete={this.props.deleteAttribute} */ key={item.id!}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }

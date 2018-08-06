@@ -16,7 +16,6 @@ interface IProps {
   statusMessage: IEnityListMessage;
   filterText: string;
   onSelectEntity: (id: string, checked: boolean) => void;
-  // onSelectEntity: (event: React.ChangeEvent<HTMLInputElement>) => {id: number, checked: boolean};
   onChangeFilter: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClearFilter: () => void;
   onLoadMockEntities: () => void;
@@ -24,6 +23,28 @@ interface IProps {
 }
 
 export class EntityList extends React.PureComponent<IProps> {
+  private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    return this.props.onSelectEntity(id, event.target.checked);
+  };
+
+  private getListItemNode = (item: IEntity) => (
+    <EntityBlock {...item} onSelectEntity={this.handleChange(item.id!)} key={item.id} />
+  );
+
+  private getStatusMessageNode = () => (
+    <div className="entity-list">
+      {this.props.statusMessage.loadingData ? (
+        <div className="loading-message">{this.props.statusMessage.loadingText}</div>
+      ) : this.props.statusMessage.loadingError ? (
+        <div className="loading-message">{this.props.statusMessage.loadingText}</div>
+      ) : this.props.list.length === 0 ? (
+        <div className="loading-message">Совпадений не найдено</div>
+      ) : (
+        <ul>{this.props.list.map(this.getListItemNode)}</ul>
+      )}
+    </div>
+  );
+
   public render() {
     return (
       <div className="left-box-container">
@@ -37,30 +58,8 @@ export class EntityList extends React.PureComponent<IProps> {
           onChangeFilter={this.props.onChangeFilter}
           onClearFilter={this.props.onClearFilter}
         />
-        {statusMessage(this.props)}
+        {this.getStatusMessageNode()}
       </div>
     );
   }
-}
-
-const statusMessage = (props: IProps) => (
-  <div className="entity-list">
-    {props.statusMessage.loadingData ? (
-      <div className="loading-message">{props.statusMessage.loadingText}</div>
-    ) : props.statusMessage.loadingError ? (
-      <div className="loading-message">{props.statusMessage.loadingText}</div>
-    ) : props.list.length === 0 ? (
-      <div className="loading-message">Совпадений не найдено</div>
-    ) : (
-      <ul>
-        {props.list.map((item: IEntity) => (
-          <EntityBlock {...item} onSelectEntity={(e) => handleChange(item.id || '', e, props.onSelectEntity)} key={item.id} />
-        ))}
-      </ul>
-    )}
-  </div>
-);
-
-const handleChange = (id: string, event: React.ChangeEvent<HTMLInputElement>, onSelectEntity: Function) => {
-  return onSelectEntity(id, event.target.checked)
 }
