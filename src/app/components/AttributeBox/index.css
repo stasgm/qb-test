@@ -1,5 +1,5 @@
 .right-box-container {
-  float: left;
+  float: right;
   display: inline-flex;
   flex-wrap: wrap;
   align-content: flex-start;

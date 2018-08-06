@@ -130,7 +130,7 @@ export class App extends React.PureComponent<any, IState> {
             filterText={this.state.filterText}
           />
           <EntityBox list={this.state.selectedEntities} onDeleteEntity={this.handleUnselectEntity} />
-          {/* <AttributeBox list={this.state.selectedAttributes} onDeleteAttribute={this.handleUnselectAttribute} /> */}
+          <AttributeBox /* list={this.state.selectedAttributes} onDeleteAttribute={this.handleUnselectAttribute}  *//>
         </main>
       </div>
     );

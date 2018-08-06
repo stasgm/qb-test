@@ -4,21 +4,62 @@ import { Attribute } from './Attribute';
 
 import './index.css';
 
-export interface IProps {
-  deleteAttribute: (id: string) => void;
-  list: Array<{ name: String; attribute: IAttribute }>;
+/* export interface IProps {
+  deleteAttribute?: (id: string) => void;
+  list?: Array<{ name: String; attribute: IAttribute }>;
+}
+ */
+const enum sortType {
+  'ASC',
+  'DESC'
 }
 
-export class AttributeBox extends React.Component<any, IProps> {
+export interface IAttributeParams {
+  id: string;
+  visible: boolean;
+  expression: { enityName: string; fieldName: string };
+  fieldAlias: string;
+  sortType: sortType;
+}
+
+interface IState {
+  attributeList: IAttributeParams[];
+}
+
+export class AttributeBox extends React.Component<any, IState> {
+  public state = {
+    attributeList: [
+      {
+        id: '0',
+        visible: true,
+        expression: { enityName: 'Company', fieldName: 'ID' },
+        fieldAlias: 'Идентифиатор',
+        sortType: sortType.ASC
+      },
+      {
+        id: '1',
+        visible: true,
+        expression: { enityName: 'Company', fieldName: 'NAME' },
+        fieldAlias: 'Наименование',
+        sortType: sortType.ASC
+      },
+      {
+        id: '2',
+        visible: true,
+        expression: { enityName: 'Company', fieldName: 'TYPE' },
+        fieldAlias: 'Тип',
+        sortType: sortType.ASC
+      }
+    ]
+  };
+
   public render() {
     return (
       <div className="right-box-container">
-        {this.props.list.map((item: { name: String; attribute: IAttribute }) => (
+        {this.state.attributeList.map((item: IAttributeParams) => (
           <Attribute
-            {...item.name}
             {...item}
-            onClickDelete={this.props.deleteAttribute}
-            key={item.attribute.id || ''}
+            /* onClickDelete={this.props.deleteAttribute} */ key={item.id!}
           />
         ))}
       </div>
