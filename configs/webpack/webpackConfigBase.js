@@ -20,7 +20,7 @@ function getWebpackConfigBase(outputFilename, outputChunkFilename) {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        //favicon: getRootRelativePath('src/assets/favicon.ico'),
+        favicon: getRootRelativePath('src/assets/favicon.ico'),
         inject: false,
         minify: { collapseWhitespace: true, removeComments: true },
         template: getRootRelativePath('src/assets/index.ejs'),
