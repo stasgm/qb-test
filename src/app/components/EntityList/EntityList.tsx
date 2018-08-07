@@ -1,4 +1,5 @@
 import React from 'react';
+import memoize from 'memoize-one';
 import { IEntity } from '@src/app/model';
 import { EntityBlock } from './EntityBlock';
 import { Filter } from './Filter';
@@ -14,15 +15,32 @@ interface IEnityListMessage {
 interface IProps {
   list: IEntity[];
   statusMessage: IEnityListMessage;
-  filterText: string;
   onSelectEntity: (id: string, checked: boolean) => void;
-  onChangeFilter: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onClearFilter: () => void;
   onLoadMockEntities: () => void;
   onLoadEntities: () => void;
 }
 
-export class EntityList extends React.PureComponent<IProps> {
+interface IState {
+  filterText: string;
+}
+
+export class EntityList extends React.PureComponent<IProps, IState> {
+  public state = {
+    filterText: ''
+  };
+
+  private filter = memoize((list: IEntity[], filterText: string) =>
+    list.filter(item => item.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()))
+  );
+
+  private handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ filterText: event.target.value });
+  };
+
+  private handleFilterClear = () => {
+    this.setState({ filterText: '' });
+  };
+
   private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     return this.props.onSelectEntity(id, event.target.checked);
   };
@@ -31,7 +49,7 @@ export class EntityList extends React.PureComponent<IProps> {
     <EntityBlock {...item} onSelectEntity={this.handleChange(item.id!)} key={item.id} />
   );
 
-  private getStatusMessageNode = () => (
+  private getStatusMessageNode = (filteredList: IEntity[]) => (
     <div className="entity-list">
       {this.props.statusMessage.loadingData ? (
         <div className="loading-message">{this.props.statusMessage.loadingText}</div>
@@ -40,12 +58,14 @@ export class EntityList extends React.PureComponent<IProps> {
       ) : this.props.list.length === 0 ? (
         <div className="loading-message">Совпадений не найдено</div>
       ) : (
-        <ul>{this.props.list.map(this.getListItemNode)}</ul>
+        <ul>{filteredList.map(this.getListItemNode)}</ul>
       )}
     </div>
   );
 
   public render() {
+    const filteredList = this.filter(this.props.list, this.state.filterText);
+
     return (
       <div className="left-box-container">
         <div className="qb-logo">GDMN: Query Builder</div>
@@ -54,11 +74,11 @@ export class EntityList extends React.PureComponent<IProps> {
           <button onClick={this.props.onLoadEntities}>Загрузить</button>
         </div>
         <Filter
-          value={this.props.filterText}
-          onChangeFilter={this.props.onChangeFilter}
-          onClearFilter={this.props.onClearFilter}
+          value={this.state.filterText}
+          onChangeFilter={this.handleFilterChange}
+          onClearFilter={this.handleFilterClear}
         />
-        {this.getStatusMessageNode()}
+        {this.getStatusMessageNode(filteredList)}
       </div>
     );
   }

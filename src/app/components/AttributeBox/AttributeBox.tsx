@@ -49,6 +49,27 @@ export class AttributeBox extends React.Component<any, IState> {
         expression: { enityName: 'Company', fieldName: 'TYPE' },
         fieldAlias: 'Тип',
         sortType: sortType.ASC
+      },
+      {
+        id: '3',
+        visible: true,
+        expression: { enityName: 'Folder', fieldName: 'ID' },
+        fieldAlias: 'Идентифиатор',
+        sortType: sortType.ASC
+      },
+      {
+        id: '4',
+        visible: true,
+        expression: { enityName: 'Folder', fieldName: 'NAME' },
+        fieldAlias: 'Наименование',
+        sortType: sortType.ASC
+      },
+      {
+        id: '5',
+        visible: true,
+        expression: { enityName: 'Folder', fieldName: 'PARENT' },
+        fieldAlias: 'Родитель',
+        sortType: sortType.ASC
       }
     ]
   };
