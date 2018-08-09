@@ -1,7 +1,9 @@
-import './index.css';
+import './styles/index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
+import { App } from './app/App';
 
-ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+import config from '../configs/config.json';
+
+ReactDOM.render(<App />, document.getElementById(config.webpack.appMountNodeId) as HTMLElement);

@@ -1,5 +1,4 @@
 {
-  "enable": true,
   "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
   "rulesDirectory": ["tslint-consistent-codestyle"],
   "rules": {
@@ -12,11 +11,12 @@
     "no-console": false,
     "no-default-export": true,
     "no-implicit-dependencies": false,
-    "no-submodule-imports": true,
+    "no-submodule-imports": [true, "@src"],
     "no-unused-expression": true,
     "no-var-requires": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
+    "no-require-imports": true,
 
     "jsx-no-lambda": false,
 
