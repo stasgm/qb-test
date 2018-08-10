@@ -1,5 +1,5 @@
 .left-box-container {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
@@ -82,7 +82,7 @@ button:active {
 
 /*   EntityList   */
 .entity-list {
-  height: 50%;
+  height: calc(100% - 130px);
   margin: 5px;
   overflow-y: auto;
 }

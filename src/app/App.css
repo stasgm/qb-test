@@ -1,32 +1,3 @@
 .App {
   color: #fff;
 }
-
-.Header {
-  background: darkslategrey;
-  text-align: center;
-  padding: 10px;
-  font-size: 30px;
-}
-
-.action-button {
-  cursor: pointer;
-  user-select: none; /* Standard */
-}
-
-.action-button:hover {
-  color: peru;
-}
-
-.action-button:active {
-  color: saddlebrown;
-}
-
-.entity-container .action-button {
-  margin-top: -2px;
-}
-
-.fa-times {
-  color: white;
-  padding: 0 2px 2px 0;
-}
