@@ -1,1 +1,1 @@
-export * from './EntityList';
+export * from '@src/app/components/EntityList/EntityList';

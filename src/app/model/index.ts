@@ -1,1 +1,1 @@
-export * from './entity';
+export * from '@src/app/model/entity';

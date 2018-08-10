@@ -1,6 +1,6 @@
 import React from 'react';
 import { IEntity } from '@src/app/model';
-import { Entity } from './Entity';
+import { Entity } from '@src/app/components/EntityBox/Entity';
 
 import './index.css';
 

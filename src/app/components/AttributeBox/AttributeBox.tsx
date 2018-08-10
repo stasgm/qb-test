@@ -1,6 +1,7 @@
-import React, { ReactEventHandler } from 'react';
+import React, { ReactEventHandler, Component } from 'react';
 import { IAttribute } from '@src/app/model';
-import { Attribute } from './Attribute';
+import { Attribute } from '@src/app/components/AttributeBox/Attribute';
+import { sortType, SortType } from '../../types';
 
 import './index.css';
 
@@ -9,24 +10,21 @@ import './index.css';
   list?: Array<{ name: String; attribute: IAttribute }>;
 }
  */
-const enum sortType {
-  'ASC',
-  'DESC'
-}
+
 
 export interface IAttributeParams {
   id: string;
   visible: boolean;
   expression: { enityName: string; fieldName: string };
   fieldAlias: string;
-  sortType: sortType;
+  sortType: string;
 }
 
 interface IState {
   attributeList: IAttributeParams[];
 }
 
-export class AttributeBox extends React.Component<any, IState> {
+export class AttributeBox extends Component<any, IState> {
   public state = {
     attributeList: [
       {
@@ -34,48 +32,60 @@ export class AttributeBox extends React.Component<any, IState> {
         visible: true,
         expression: { enityName: 'Company', fieldName: 'ID' },
         fieldAlias: 'Идентифиатор',
-        sortType: sortType.ASC
+        sortType: sortType[0]
       },
       {
         id: '1',
         visible: true,
         expression: { enityName: 'Company', fieldName: 'NAME' },
         fieldAlias: 'Наименование',
-        sortType: sortType.ASC
+        sortType: sortType[0]
       },
       {
         id: '2',
         visible: true,
         expression: { enityName: 'Company', fieldName: 'TYPE' },
         fieldAlias: 'Тип',
-        sortType: sortType.ASC
+        sortType: sortType[0]
       },
       {
         id: '3',
         visible: true,
         expression: { enityName: 'Folder', fieldName: 'ID' },
         fieldAlias: 'Идентифиатор',
-        sortType: sortType.ASC
+        sortType: sortType[1]
       },
       {
         id: '4',
         visible: true,
         expression: { enityName: 'Folder', fieldName: 'NAME' },
         fieldAlias: 'Наименование',
-        sortType: sortType.ASC
+        sortType: sortType[0]
       },
       {
         id: '5',
         visible: true,
         expression: { enityName: 'Folder', fieldName: 'PARENT' },
         fieldAlias: 'Родитель',
-        sortType: sortType.ASC
+        sortType: sortType[0]
       }
     ]
   };
 
   private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAttributeList: IAttributeParams[] = this.state.attributeList.map((item: IAttributeParams) => item.id === id ? {...item, visible: event.target.checked} : item);
+    this.setState({ attributeList: newAttributeList });
+    console.log(this.state.attributeList);
+  };
+
+
+  private handleChangeFieldAlias = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newAttributeList: IAttributeParams[] = this.state.attributeList.map((item: IAttributeParams) => item.id === id ? {...item, fieldAlias: event.target.value} : item);
+    this.setState({ attributeList: newAttributeList });
+  };
+
+  private handleChangeSortType = (id: string) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newAttributeList: IAttributeParams[] = this.state.attributeList.map((item: IAttributeParams) => item.id === id ? {...item, sortType: event.target.value} : item);
     this.setState({ attributeList: newAttributeList });
   };
 
@@ -101,6 +111,8 @@ export class AttributeBox extends React.Component<any, IState> {
               <Attribute
                 {...item}
                 onChange={this.handleChange(item.id)}
+                onChangeSortType={this.handleChangeSortType(item.id)}
+                onChangeFieldAlias={this.handleChangeFieldAlias(item.id)}
                 /* onClickDelete={this.props.deleteAttribute} */ key={item.id!}
               />
             ))}

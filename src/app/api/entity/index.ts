@@ -1,6 +1,6 @@
 import shortid from 'shortid';
-import { IEntity } from '../../model';
-import { entityList } from './mockData';
+import { IEntity } from '@src/app/model';
+import { entityList } from '@src/app/api/entity/mockData';
 
 import config from '../../../../configs/config.json';
 

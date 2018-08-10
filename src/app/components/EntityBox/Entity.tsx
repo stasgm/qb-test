@@ -1,7 +1,7 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 import { IEntity } from '@src/app/model';
-import { AttributeList } from './AttributeList';
+import { AttributeList } from '@src/app/components/EntityBox/AttributeList';
 
 import './index.css';
 
@@ -22,7 +22,7 @@ export const Entity: React.SFC<IEntity & IEntityEvent> = props => (
       <div className="entity-box-handle">
         <div className="entity-box-handle-title">{props.name}</div>
         <div className="action-button" onClick={() => props.onClickDelete(props.id || '')}>
-          X
+          <i className="fas fa-times fa-xs"></i>
         </div>
       </div>
       <AttributeList data={props.attributes || []} />
