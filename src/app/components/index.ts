@@ -1,3 +1,3 @@
-export * from './EntityBox';
-export * from './EntityList';
-export * from './AttributeBox';
+export * from '@src/app/components/EntityBox';
+export * from '@src/app/components/EntityList';
+export * from '@src/app/components/AttributeBox';

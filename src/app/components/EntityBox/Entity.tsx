@@ -1,7 +1,7 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 import { IEntity } from '@src/app/model';
-import { AttributeList } from './AttributeList';
+import { AttributeList } from '@src/app/components/EntityBox/AttributeList';
 
 import './index.css';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import memoize from 'memoize-one';
 import { IEntity } from '@src/app/model';
-import { EntityBlock } from './EntityBlock';
-import { Filter } from './Filter';
+import { EntityBlock } from '@src/app/components/EntityList/EntityBlock';
+import { Filter } from '@src/app/components/EntityList/Filter';
 
 import './index.css';
 

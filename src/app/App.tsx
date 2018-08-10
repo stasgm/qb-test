@@ -1,7 +1,7 @@
 import React from 'react';
-import { EntityList, EntityBox, AttributeBox } from './components';
-import { IEntity, IAttribute } from './model';
-import { entityAPI } from './api/entity';
+import { EntityList, EntityBox, AttributeBox } from '@src/app/components';
+import { IEntity, IAttribute } from '@src/app/model';
+import { entityAPI } from '@src/app/api/entity';
 import './App.css';
 
 interface IState {

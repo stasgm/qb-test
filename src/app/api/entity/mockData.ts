@@ -1,4 +1,4 @@
-import { IEntity } from '../../model';
+import { IEntity } from '@src/app/model';
 
 export const entityList: IEntity[] = [
   {
