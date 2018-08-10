@@ -1,1 +1,1 @@
-# test lib
+# test lib GDMN-QUERY BUILDER
