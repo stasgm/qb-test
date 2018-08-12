@@ -23,7 +23,7 @@ function getWebpackConfigBase(outputFilename, outputChunkFilename) {
         favicon: getRootRelativePath('src/assets/favicon.ico'),
         inject: false,
         minify: { collapseWhitespace: true, removeComments: true },
-        template: getRootRelativePath('src/assets/index.ejs'),
+        template: getRootRelativePath('src/index.ejs'),
         title: 'GDMN - QB',
         // template params
         appMountNodeId: config.webpack.appMountNodeId,

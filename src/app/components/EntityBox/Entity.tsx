@@ -22,7 +22,7 @@ export const Entity: React.SFC<IEntity & IEntityEvent> = props => (
       <div className="entity-box-handle">
         <div className="entity-box-handle-title">{props.name}</div>
         <div className="action-button" onClick={() => props.onClickDelete(props.id || '')}>
-          <i className="fas fa-times fa-xs"></i>
+          <i className="fas fa-times fa-xs" />
         </div>
       </div>
       <AttributeList data={props.attributes || []} />

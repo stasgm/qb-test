@@ -8,8 +8,8 @@ interface IEntityEvent {
 }
 
 const getName = (name: string): string => {
-   return `entity-item-${name}`
-}
+  return `entity-item-${name}`;
+};
 
 /* const selectItem = (onClick: Function): React.ChangeEvent<HTMLInputElement> => {
   return onClick;
@@ -17,7 +17,12 @@ const getName = (name: string): string => {
 
 export const EntityBlock: React.SFC<IEntity & IEntityEvent> = props => (
   <li className="entity-item">
-    <input className="checkmark" id={getName(props.name)} type="checkbox" onChange={props.onSelectEntity}  /* checked={this.state.complete} *//>
+    <input
+      className="checkmark"
+      id={getName(props.name)}
+      type="checkbox"
+      onChange={props.onSelectEntity} /* checked={this.state.complete} */
+    />
     <label htmlFor={getName(props.name)}>{props.name}</label>
   </li>
 );

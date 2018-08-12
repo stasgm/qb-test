@@ -6,6 +6,9 @@ packages/*/dist*
 # server config
 /configs/config.json
 
+# mock server
+/mockServer
+
 # Logs
 logs
 *.log

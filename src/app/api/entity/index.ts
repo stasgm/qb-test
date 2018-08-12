@@ -6,9 +6,8 @@ import config from '../../../../configs/config.json';
 
 const baseURL = `${config.server.http.host}:${config.server.http.port}`;
 
-
-const mapToEntities = (entities: { entities: IEntity[] }): IEntity[] => {
-  return entities.entities.map(mapToEntity);
+const mapToEntities = (entities: IEntity[]): IEntity[] => {
+  return entities.map(mapToEntity);
 };
 
 const mapToEntity = (entity: IEntity): IEntity => {
@@ -25,13 +24,14 @@ const fetchMockData = (): Promise<IEntity[]> => {
   });
 };
 
-const fetchData = async(): Promise<IEntity[]> => {
+const fetchData = async (): Promise<IEntity[]> => {
   const ermodelsURL = `${baseURL}${config.server.paths.er}`;
   const response = await fetch(ermodelsURL);
   if (!response.ok) throw new Error(response.statusText);
-  const entities: IEntity[] = await response.json();
-  // response = await mapToEntities;
-  return mapToEntities({entities});
+  const list: {
+    entities: IEntity[];
+  } = await response.json();
+  return mapToEntities(list.entities);
 };
 
 /* const fetchDataAsync = (): Promise<IEntity[]> => {
@@ -41,7 +41,6 @@ const fetchData = async(): Promise<IEntity[]> => {
     .then(response => response.json())
     .then(mapToEntities);
 }; */
-
 
 export const entityAPI = {
   fetchData,

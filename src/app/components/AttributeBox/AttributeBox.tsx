@@ -11,7 +11,6 @@ import './index.css';
 }
  */
 
-
 export interface IAttributeParams {
   id: string;
   visible: boolean;
@@ -73,26 +72,30 @@ export class AttributeBox extends Component<any, IState> {
   };
 
   private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newAttributeList: IAttributeParams[] = this.state.attributeList.map((item: IAttributeParams) => item.id === id ? {...item, visible: event.target.checked} : item);
+    const newAttributeList: IAttributeParams[] = this.state.attributeList.map(
+      (item: IAttributeParams) => (item.id === id ? { ...item, visible: event.target.checked } : item)
+    );
     this.setState({ attributeList: newAttributeList });
     console.log(this.state.attributeList);
   };
 
-
   private handleChangeFieldAlias = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newAttributeList: IAttributeParams[] = this.state.attributeList.map((item: IAttributeParams) => item.id === id ? {...item, fieldAlias: event.target.value} : item);
+    const newAttributeList: IAttributeParams[] = this.state.attributeList.map(
+      (item: IAttributeParams) => (item.id === id ? { ...item, fieldAlias: event.target.value } : item)
+    );
     this.setState({ attributeList: newAttributeList });
   };
 
   private handleChangeSortType = (id: string) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newAttributeList: IAttributeParams[] = this.state.attributeList.map((item: IAttributeParams) => item.id === id ? {...item, sortType: event.target.value} : item);
+    const newAttributeList: IAttributeParams[] = this.state.attributeList.map(
+      (item: IAttributeParams) => (item.id === id ? { ...item, sortType: event.target.value } : item)
+    );
     this.setState({ attributeList: newAttributeList });
   };
 
-  private handleVisibleChange =(e: React.ChangeEvent<HTMLInputElement>) => {
+  private handleVisibleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e);
-  }
-
+  };
 
   public render() {
     return (

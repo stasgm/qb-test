@@ -11,11 +11,11 @@ interface IProps {
 }
 
 export class EntityBox extends React.PureComponent<IProps> {
-/*   private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  /*   private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     return this.props.onSelectEntity(id, false);
   };
    */
-/*   private getListItemNode = (item: IEntity) => (
+  /*   private getListItemNode = (item: IEntity) => (
     <Entity {...item} key={item.id} onClickDelete={this.props.onDeleteEntity} />
     <EntityBlock {...item} onSelectEntity={this.handleChange(item.id!)} key={item.id} />
   ); */
