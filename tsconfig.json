@@ -30,7 +30,6 @@
     "configs",
     "dist",
     "node_modules",
-    "scripts",
-    "mockServer"
+    "scripts"
   ]
 }
