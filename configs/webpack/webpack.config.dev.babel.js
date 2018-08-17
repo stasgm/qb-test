@@ -15,7 +15,7 @@ export default merge(getWebpackConfigBase(OUTPUT_FILENAME, OUTPUT_CHUNK_FILENAME
   mode: 'development',
   devServer: {
     host: 'localhost',
-    port: 9090,
+    port: 8080,
     historyApiFallback: true,
     hot: true, //HMR
     inline: true, //HMR

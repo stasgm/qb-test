@@ -8,6 +8,7 @@ interface IState {
   statusMessage: IEnityListMessage;
   entities: IEntity[];
   selectedEntities: IEntity[];
+  treeData: object;
 }
 
 interface IEnityListMessage {
@@ -20,11 +21,16 @@ export class App extends React.PureComponent<any, IState> {
   public state = {
     statusMessage: {},
     entities: [],
-    selectedEntities: []
+    selectedEntities: [],
+    treeData: {},
   };
 
   public componentDidMount() {
     this.handleLoadMockEntities();
+  }
+
+  private setTreeData(): void {
+    console.log('tree');
   }
 
   private handleLoadMockEntities = () => {
@@ -32,7 +38,7 @@ export class App extends React.PureComponent<any, IState> {
       this.setState({
         statusMessage: { loadingData: false, loadingText: '', loadingError: false },
         entities
-      });
+      }, this.setTreeData);
     });
   };
 
@@ -83,6 +89,7 @@ export class App extends React.PureComponent<any, IState> {
         <main className="application-main" role="main">
           <EntityList
             list={this.state.entities}
+            treeData={this.state.treeData}
             statusMessage={this.state.statusMessage}
             onSelectEntity={this.handleSelectEntity}
             onLoadMockEntities={this.handleLoadMockEntities}
