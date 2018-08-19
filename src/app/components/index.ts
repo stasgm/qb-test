@@ -1,3 +1,3 @@
-export * from '@src/app/components/EntityBox';
-export * from '@src/app/components/EntityList';
+export * from '@src/app/components/FilterBox';
+export * from '@src/app/components/EntityInspector';
 export * from '@src/app/components/AttributeBox';

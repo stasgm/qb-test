@@ -1,5 +1,5 @@
 import React from 'react';
-import { EntityList, ITreeNode, EntityBox, AttributeBox } from '@src/app/components';
+import { EntityInspector, ITreeNode, FilterBox, AttributeBox, IEnityListMessage } from '@src/app/components';
 import { IEntity, IAttribute } from '@src/app/model';
 import { entityAPI } from '@src/app/api/entity';
 import './App.css';
@@ -9,12 +9,6 @@ interface IState {
   entities: IEntity[];
   selectedEntities: IEntity | undefined;
   treeData?: ITreeNode;
-}
-
-interface IEnityListMessage {
-  loadingData?: boolean;
-  loadingText?: string;
-  loadingError?: boolean;
 }
 
 const data: ITreeNode = {
@@ -126,7 +120,7 @@ export class App extends React.PureComponent<any, IState> {
     return (
       <div className="App">
         <main className="application-main" role="main">
-          <EntityList
+          <EntityInspector
             list={this.state.entities}
             treeData={this.state.treeData}
             statusMessage={this.state.statusMessage}
@@ -135,8 +129,8 @@ export class App extends React.PureComponent<any, IState> {
             onLoadMockEntities={this.handleLoadMockEntities}
             onLoadEntities={this.handleLoadEntities}
           />
-          <EntityBox list={this.state.selectedEntities} onUnselectEntity={this.handleSelectEntity} />
           <AttributeBox /* list={this.state.selectedAttributes} onDeleteAttribute={this.handleUnselectAttribute}  */ />
+          <FilterBox list={this.state.selectedEntities} onUnselectEntity={this.handleSelectEntity} />
         </main>
       </div>
     );

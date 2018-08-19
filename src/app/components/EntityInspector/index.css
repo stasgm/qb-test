@@ -11,14 +11,15 @@
 }
 
 .qb-logo {
+  height: 40px;
   padding: 10px;
   border-bottom: 1px #e8e8e8 solid;
   color: #333;
   font-size: 20px;
-  margin: 0;
 }
 
-.data-container {
+.component-container {
+  height: calc(100% - 40px);
   padding: 3px 3px 0px 3px;;
 }
 
@@ -58,7 +59,7 @@ button:active {
 
 /* Filter block */
 .filter {
-  margin-bottom: 3px;
+  margin: 3px 0 3px 0;
   border: 1px solid gray;
   background-color: white;
 }
@@ -87,7 +88,7 @@ button:active {
 
 /*   EntityList   */
 .entity-list {
-  height: calc(100% - 130px);
+  height: calc(100% - 70px);
   overflow-y: auto;
 }
 
@@ -130,6 +131,11 @@ button:active {
   padding: 7px;
 }
 
+.fa-angle-right, .fa-angle-down {
+  color: gray;
+  padding: 3px 7px;
+}
+
 .search-svg {
   position: absolute;
   width: 30px;
@@ -154,11 +160,9 @@ button:active {
 /* Entity - attributes */
 
 .entity-name {
-  margin: 5px 0px 5px 0px;
   border: 1px solid gray;
   background: #516873;
   color: #ffffff;
-
   overflow: hidden;
   position: relative;
   padding: 5px 5px 0px 5px;
@@ -171,6 +175,20 @@ button:active {
   outline: none;
   line-height: 0;
   float: right;
+  top: 0;
+  cursor: pointer;
+}
+
+.attribute-entity-button {
+  margin: 0;
+  padding: 0;
+  height: 20px;
+  background: #f5f5f5;
+  width: 20px;
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  line-height: 3px;
   top: 0;
   cursor: pointer;
 }

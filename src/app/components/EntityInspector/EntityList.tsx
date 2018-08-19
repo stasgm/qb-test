@@ -1,16 +1,15 @@
 import React from 'react';
 import memoize from 'memoize-one';
-import { EntityTreeView, ITreeNode } from '@src/app/components/EntityList/EntityTreeView';
-
-export { ITreeNode } from '@src/app/components/EntityList/EntityTreeView';
-
 import { IEntity } from '@src/app/model';
-import { EntityBlock } from '@src/app/components/EntityList/EntityBlock';
-import { Filter } from '@src/app/components/EntityList/Filter';
+import { Filter } from '@src/app/components/EntityInspector/Filter';
 
 import './index.css';
 
-interface IEnityListMessage {
+interface IState {
+  filterText: string;
+}
+
+export interface IEnityListMessage {
   loadingData?: boolean;
   loadingText?: string;
   loadingError?: boolean;
@@ -18,16 +17,10 @@ interface IEnityListMessage {
 
 interface IProps {
   list: IEntity[];
-  treeData?: ITreeNode;
   statusMessage: IEnityListMessage;
   onSelectEntity: (id: string, checked: boolean) => void;
-  onUnselectEntity: () => void;
   onLoadMockEntities: () => void;
   onLoadEntities: () => void;
-}
-
-interface IState {
-  filterText: string;
 }
 
 export class EntityList extends React.PureComponent<IProps, IState> {
@@ -71,27 +64,36 @@ export class EntityList extends React.PureComponent<IProps, IState> {
 
   public render() {
     const filteredList = this.filter(this.props.list, this.state.filterText);
-
     return (
-      <div className="left-box-container">
-        <div className="qb-logo">GDMN: Query Builder</div>
-        {this.props.treeData !== undefined ? (
-          <EntityTreeView data={this.props.treeData} onClear={this.props.onUnselectEntity} />
-        ) : (
-          <div className="data-container">
-            <div className="load-buttons-container">
-              <button onClick={this.props.onLoadMockEntities}>Загрузить (тест) </button>
-              <button onClick={this.props.onLoadEntities}>Загрузить</button>
-            </div>
-            <Filter
-              value={this.state.filterText}
-              onChangeFilter={this.handleFilterChange}
-              onClearFilter={this.handleFilterClear}
-            />
-            {this.getStatusMessageNode(filteredList)}
-          </div>
-        )}
+      <div className="component-container">
+        <div className="load-buttons-container">
+          <button onClick={this.props.onLoadMockEntities}>Загрузить (тест) </button>
+          <button onClick={this.props.onLoadEntities}>Загрузить</button>
+        </div>
+        <Filter
+          value={this.state.filterText}
+          onChangeFilter={this.handleFilterChange}
+          onClearFilter={this.handleFilterClear}
+        />
+        {this.getStatusMessageNode(filteredList)}
       </div>
     );
   }
 }
+
+const getName = (name: string): string => {
+  return `entity-item-${name}`;
+};
+
+interface IEntityEvent {
+  onSelectEntity: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const EntityBlock = (props: IEntity & IEntityEvent) => {
+  return (
+    <li className="entity-item">
+      <input className="checkmark" id={getName(props.name)} type="checkbox" onChange={props.onSelectEntity} />
+      <label htmlFor={getName(props.name)}>{props.name}</label>
+    </li>
+  );
+};

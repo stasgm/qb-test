@@ -1,6 +1,6 @@
 import React from 'react';
 import { IEntity } from '@src/app/model';
-import { Entity } from '@src/app/components/EntityBox/Entity';
+import { Entity } from '@src/app/components/FilterBox/Entity';
 
 import './index.css';
 
@@ -10,7 +10,7 @@ interface IProps {
   onUnselectEntity: (id: string, checked: boolean) => void;
 }
 
-export class EntityBox extends React.PureComponent<IProps> {
+export class FilterBox extends React.PureComponent<IProps> {
   /*   private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     return this.props.onSelectEntity(id, false);
   };
