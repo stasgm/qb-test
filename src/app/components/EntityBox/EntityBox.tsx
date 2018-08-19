@@ -5,7 +5,7 @@ import { Entity } from '@src/app/components/EntityBox/Entity';
 import './index.css';
 
 interface IProps {
-  list: IEntity[];
+  list: IEntity | undefined;
   // onDeleteEntity: (id: string) => void;
   onUnselectEntity: (id: string, checked: boolean) => void;
 }
@@ -23,9 +23,9 @@ export class EntityBox extends React.PureComponent<IProps> {
   public render() {
     return (
       <div className="center-box-container">
-        {this.props.list.map((item: IEntity) => (
+     {/*    {this.props.list.map((item: IEntity) => (
           <Entity {...item} key={item.id} onClickDelete={() => this.props.onUnselectEntity(item.id!, false)} />
-        ))}
+        ))} */}
       </div>
     );
   }

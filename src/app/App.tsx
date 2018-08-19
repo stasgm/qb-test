@@ -1,5 +1,5 @@
 import React from 'react';
-import { EntityList, EntityBox, AttributeBox } from '@src/app/components';
+import { EntityList, ITreeNode, EntityBox, AttributeBox } from '@src/app/components';
 import { IEntity, IAttribute } from '@src/app/model';
 import { entityAPI } from '@src/app/api/entity';
 import './App.css';
@@ -7,8 +7,8 @@ import './App.css';
 interface IState {
   statusMessage: IEnityListMessage;
   entities: IEntity[];
-  selectedEntities: IEntity[];
-  treeData: object;
+  selectedEntities: IEntity | undefined;
+  treeData?: ITreeNode;
 }
 
 interface IEnityListMessage {
@@ -17,28 +17,66 @@ interface IEnityListMessage {
   loadingError?: boolean;
 }
 
+const data: ITreeNode = {
+  name: 'root',
+  toggled: true,
+  children: [
+    {
+      name: 'parent',
+      children: [{ name: 'child1' }, { name: 'child2' }]
+    },
+    {
+      name: 'loading parent',
+      loading: true,
+      children: []
+    },
+    {
+      name: 'parent',
+      children: [
+        {
+          name: 'nested parent',
+          children: [{ name: 'nested child 1' }, { name: 'nested child 2' }]
+        }
+      ]
+    }
+  ]
+};
+
 export class App extends React.PureComponent<any, IState> {
   public state = {
     statusMessage: {},
     entities: [],
-    selectedEntities: [],
-    treeData: {},
+    selectedEntities: undefined,
+    treeData: undefined
   };
 
   public componentDidMount() {
     this.handleLoadMockEntities();
   }
 
-  private setTreeData(): void {
-    console.log('tree');
-  }
+  private setTreeData = (item: IEntity | undefined) => () => {
+    if (item === undefined) {
+      this.setState({ treeData: undefined });
+      return;
+    }
+
+    let attributes: ITreeNode[] = [];
+    if (item.attributes !== undefined) {
+      attributes = item.attributes.map((i: IAttribute) => {
+        if (i.type === 'EntityAttribute') { return { name: i.name, entities: i.references} }
+        else { return { name: i.name} }
+      })
+    }
+
+    this.setState({ treeData: { name: item.name, children: attributes } });
+  };
 
   private handleLoadMockEntities = () => {
     entityAPI.fetchMockData().then(entities => {
       this.setState({
         statusMessage: { loadingData: false, loadingText: '', loadingError: false },
         entities
-      }, this.setTreeData);
+      });
     });
   };
 
@@ -54,7 +92,7 @@ export class App extends React.PureComponent<any, IState> {
       .catch(e =>
         this.setState({
           entities: [],
-          selectedEntities: [],
+          selectedEntities: undefined,
           statusMessage: { loadingData: false, loadingText: `Ошибка: ${e.message}`, loadingError: true }
         })
       );
@@ -71,16 +109,17 @@ export class App extends React.PureComponent<any, IState> {
   };
 
   private handleSelectEntity = (id: string, checked: boolean) => {
-    console.log(id);
-    if (checked) {
-      const selectedEntity = this.state.entities.find((i: IEntity) => i.id === id);
-      if (selectedEntity) {
-        this.setState({ selectedEntities: [...this.state.selectedEntities, selectedEntity] });
-      }
-      return;
-    }
+    if (!checked) return;
 
-    this.setState({ selectedEntities: this.state.selectedEntities.filter((i: IEntity) => i.id !== id) });
+    const selectedEntity = this.state.entities.find((i: IEntity) => i.id === id);
+    if (selectedEntity) {
+      this.setState({ selectedEntities: selectedEntity }, this.setTreeData(selectedEntity));
+    }
+    // this.setState({ selectedEntities: this.state.selectedEntities.find((i: IEntity) => i.id !== id) });
+  };
+
+  private handleUnSelectEntity = () => {
+    this.setState({ selectedEntities: undefined }, this.setTreeData(undefined));
   };
 
   public render() {
@@ -92,6 +131,7 @@ export class App extends React.PureComponent<any, IState> {
             treeData={this.state.treeData}
             statusMessage={this.state.statusMessage}
             onSelectEntity={this.handleSelectEntity}
+            onUnselectEntity={this.handleUnSelectEntity}
             onLoadMockEntities={this.handleLoadMockEntities}
             onLoadEntities={this.handleLoadEntities}
           />

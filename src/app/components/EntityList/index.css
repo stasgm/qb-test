@@ -6,8 +6,8 @@
   background-color: #f5f5f5;
   border: #e8e8e8 solid;
   border-width: 0 1px 0 0;
+  padding: 3px;
   width: 300px;
-  padding: 6px;
 }
 
 .qb-logo {
@@ -18,12 +18,15 @@
   margin: 0;
 }
 
+.data-container {
+  padding: 3px 3px 0px 3px;;
+}
+
 /* Load block */
 .load-buttons-container {
   display: flex;
-  margin-bottom: 10px;
-  padding: 5px 5px 0px 5px;
   justify-content: space-between;
+  margin-bottom: 3px;
 }
 
 button {
@@ -35,6 +38,7 @@ button {
 }
 
 .loading-message {
+  margin: 5px;
   padding: 5px 5px 0px 5px;
   color: black;
 }
@@ -54,7 +58,7 @@ button:active {
 
 /* Filter block */
 .filter {
-  margin: 5px;
+  margin-bottom: 3px;
   border: 1px solid gray;
   background-color: white;
 }
@@ -75,6 +79,7 @@ button:active {
 
 .filter-clear {
   height: 30px;
+  width: 30px;
   position: absolute;
   right: 0px;
   padding: 0px;
@@ -83,7 +88,6 @@ button:active {
 /*   EntityList   */
 .entity-list {
   height: calc(100% - 130px);
-  margin: 5px;
   overflow-y: auto;
 }
 
@@ -120,7 +124,8 @@ button:active {
   width: 80%;
 }
 
-.fa-search, .filter .fa-times {
+.fa-search,
+.filter .fa-times {
   color: gray;
   padding: 7px;
 }
@@ -144,4 +149,28 @@ button:active {
   margin-left: 30px;
   margin-right: 23px;
   height: 100%;
+}
+
+/* Entity - attributes */
+
+.entity-name {
+  margin: 5px 0px 5px 0px;
+  border: 1px solid gray;
+  background: #516873;
+  color: #ffffff;
+
+  overflow: hidden;
+  position: relative;
+  padding: 5px 5px 0px 5px;
+  height: 30px;
+}
+
+.entity-name button {
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  line-height: 0;
+  float: right;
+  top: 0;
+  cursor: pointer;
 }

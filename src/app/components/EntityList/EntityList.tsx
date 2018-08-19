@@ -1,38 +1,14 @@
 import React from 'react';
 import memoize from 'memoize-one';
-// @ts-ignore;
-import { Treebeard } from 'react-treebeard';
+import { EntityTreeView, ITreeNode } from '@src/app/components/EntityList/EntityTreeView';
+
+export { ITreeNode } from '@src/app/components/EntityList/EntityTreeView';
 
 import { IEntity } from '@src/app/model';
 import { EntityBlock } from '@src/app/components/EntityList/EntityBlock';
 import { Filter } from '@src/app/components/EntityList/Filter';
 
 import './index.css';
-
-const data = {
-  name: 'root',
-  toggled: true,
-  children: [
-    {
-      name: 'parent',
-      children: [{ name: 'child1' }, { name: 'child2' }]
-    },
-    {
-      name: 'loading parent',
-      loading: true,
-      children: []
-    },
-    {
-      name: 'parent',
-      children: [
-        {
-          name: 'nested parent',
-          children: [{ name: 'nested child 1' }, { name: 'nested child 2' }]
-        }
-      ]
-    }
-  ]
-};
 
 interface IEnityListMessage {
   loadingData?: boolean;
@@ -42,9 +18,10 @@ interface IEnityListMessage {
 
 interface IProps {
   list: IEntity[];
-  treeData: object;
+  treeData?: ITreeNode;
   statusMessage: IEnityListMessage;
   onSelectEntity: (id: string, checked: boolean) => void;
+  onUnselectEntity: () => void;
   onLoadMockEntities: () => void;
   onLoadEntities: () => void;
 }
@@ -55,12 +32,7 @@ interface IState {
 
 export class EntityList extends React.PureComponent<IProps, IState> {
   public state = {
-    filterText: '',
-  };
-
-  public componentWillReceiveProps (nextprop: IProps) {
-    console.log('nxtprop');
-    // this.setState({ selectedEntity: nextprop.list[0] });
+    filterText: ''
   };
 
   private filter = memoize((list: IEntity[], filterText: string) =>
@@ -103,10 +75,10 @@ export class EntityList extends React.PureComponent<IProps, IState> {
     return (
       <div className="left-box-container">
         <div className="qb-logo">GDMN: Query Builder</div>
-        {(this.props.treeData.toString() === '' ) ? (
-          <Treebeard data={this.props.treeData} onToggle="onToggle" />
+        {this.props.treeData !== undefined ? (
+          <EntityTreeView data={this.props.treeData} onClear={this.props.onUnselectEntity} />
         ) : (
-          <div>
+          <div className="data-container">
             <div className="load-buttons-container">
               <button onClick={this.props.onLoadMockEntities}>Загрузить (тест) </button>
               <button onClick={this.props.onLoadEntities}>Загрузить</button>
