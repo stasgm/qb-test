@@ -1,20 +1,22 @@
 import React from 'react';
-import { IEntity } from '@src/app/model';
+// import { Entities, Entity } from 'gdmn-orm';
 import { EntityList, IEnityListMessage } from '@src/app/components/EntityInspector/EntityList';
 import { EntityTreeView, ITreeNode } from '@src/app/components/EntityInspector/EntityTreeView';
+
 
 export { ITreeNode, IEnityListMessage };
 
 import './index.css';
 
 interface IProps {
-  list: IEntity[];
+  list: string[];
   treeData?: ITreeNode;
   statusMessage: IEnityListMessage;
-  onSelectEntity: (id: string, checked: boolean) => void;
-  onUnselectEntity: () => void;
   onLoadMockEntities: () => void;
   onLoadEntities: () => void;
+  onSelectEntity: (id: string, checked: boolean) => void;
+  onUnselectEntity: () => void;
+  onSelectAttribute: (id: string, checked: boolean) => void;
 }
 
 interface IState {
@@ -27,7 +29,11 @@ export class EntityInspector extends React.PureComponent<IProps, IState> {
       <div className="left-box-container">
         <div className="qb-logo">GDMN: Query Builder</div>
         {this.props.treeData !== undefined ? (
-          <EntityTreeView data={this.props.treeData} onClear={this.props.onUnselectEntity} />
+          <EntityTreeView
+            data={this.props.treeData}
+            onClear={this.props.onUnselectEntity}
+            onSelectAttribute={this.props.onSelectAttribute}
+          />
         ) : (
           <EntityList
             list={this.props.list}

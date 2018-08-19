@@ -23,7 +23,7 @@ export class FilterBox extends React.PureComponent<IProps> {
   public render() {
     return (
       <div className="center-box-container">
-     {/*    {this.props.list.map((item: IEntity) => (
+        {/*    {this.props.list.map((item: IEntity) => (
           <Entity {...item} key={item.id} onClickDelete={() => this.props.onUnselectEntity(item.id!, false)} />
         ))} */}
       </div>

@@ -1,4 +1,4 @@
-import shortid from 'shortid';
+import { ERModel } from 'gdmn-orm';
 import { IEntity } from '@src/app/model';
 import { entityList } from '@src/app/api/entity/mockData';
 
@@ -11,20 +11,24 @@ const mapToEntities = (entities: IEntity[]): IEntity[] => {
 };
 
 const mapToEntity = (entity: IEntity): IEntity => {
-  entity.id = shortid.generate();
   return entity;
 };
 
 const fetchMockData = (): Promise<IEntity[]> => {
-  return Promise.resolve(entityList).then(el => {
-    return el.map(i => {
-      i.id = shortid.generate();
-      return i;
-    });
-  });
+  return Promise.resolve(entityList).then(el => el);
 };
 
-const fetchData = async (): Promise<IEntity[]> => {
+const fetchData = async (): Promise<ERModel> => {
+  const ermodelsURL = `${baseURL}${config.server.paths.er}`;
+  const response = await fetch(ermodelsURL);
+  if (!response.ok) throw new Error(response.statusText);
+
+  const model = await response.json();
+  // console.log(model.entities.GD_USER);
+  return model;
+};
+
+/* const fetchData = async (): Promise<IEntity[]> => {
   const ermodelsURL = `${baseURL}${config.server.paths.er}`;
   const response = await fetch(ermodelsURL);
   if (!response.ok) throw new Error(response.statusText);
@@ -32,7 +36,7 @@ const fetchData = async (): Promise<IEntity[]> => {
     entities: IEntity[];
   } = await response.json();
   return mapToEntities(list.entities);
-};
+}; */
 
 /* const fetchDataAsync = (): Promise<IEntity[]> => {
   const ermodelsURL = `${baseURL}${config.server.paths.er}`;

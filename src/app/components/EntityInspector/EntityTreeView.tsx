@@ -1,8 +1,6 @@
 import React from 'react';
 import memoize from 'memoize-one';
 import { Filter } from '@src/app/components/EntityInspector/Filter';
-import { IAttribute, IEntity } from '@src/app/model';
-
 export interface ITreeNode {
   name: string;
   loading?: boolean;
@@ -15,24 +13,25 @@ export interface ITreeNode {
 interface IAppProps {
   data: ITreeNode;
   onClear: () => void;
+
+  onSelectAttribute: (id: string, checked: boolean) => void;
 }
 
 interface IState {
   filterText: string;
 }
 
-const getName = (name: string): string => {
-  return `attribute-item-${name}`;
-};
-
 export class EntityTreeView extends React.PureComponent<IAppProps, IState> {
   public state = {
     filterText: ''
   };
 
-  private filter = memoize((list: IAttribute[], filterText: string) =>
-    list.filter(item => item.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()))
-  );
+  private filter = memoize((list: ITreeNode[] | undefined, filterText: string) => {
+    if (list === undefined) {
+      return [];
+    }
+    return list.filter(item => item.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()));
+  });
 
   private handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ filterText: event.target.value });
@@ -42,8 +41,27 @@ export class EntityTreeView extends React.PureComponent<IAppProps, IState> {
     this.setState({ filterText: '' });
   };
 
+  private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    return this.props.onSelectAttribute(id, event.target.checked);
+  };
+
+  private getListItemNode = (item: ITreeNode) => (
+    <AttributeBlock {...item} onSelectEntity={this.handleChange(item.name)} key={item.name} />
+  );
+
+  private getStatusMessageNode = (filteredList: ITreeNode[]) => (
+    <div className="entity-list">
+      {this.props.data === undefined ? (
+        <div className="loading-message">Совпадений не найдено</div>
+      ) : (
+        <ul>{filteredList.map(this.getListItemNode)}</ul>
+      )}
+    </div>
+  );
+
   public render() {
     const rootItem = this.props.data;
+    const filteredList: ITreeNode[] = this.filter(this.props.data.children, this.state.filterText);
     return (
       <div className="component-container">
         <div className="entity-name">
@@ -57,33 +75,31 @@ export class EntityTreeView extends React.PureComponent<IAppProps, IState> {
           onChangeFilter={this.handleFilterChange}
           onClearFilter={this.handleFilterClear}
         />
-        <AttributeList data={rootItem} />
+        {this.getStatusMessageNode(filteredList)}
       </div>
     );
   }
 }
 
-const AttributeList = (props: { data: ITreeNode }) => {
+const getName = (name: string): string => {
+  return `entity-item-${name}`;
+};
+
+interface IEntityEvent {
+  onSelectEntity: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const AttributeBlock = (props: ITreeNode & IEntityEvent) => {
   return (
-    <div className="entity-list">
-      <ul>
-        {props.data.children !== undefined ? (
-          props.data.children.map((i, idx) => (
-            <li key={idx} className="entity-item">
-              {i.entities ? (
-                <button className="attribute-entity-button">
-                  <i className="fas fa-angle-right" />
-                </button>
-              ) : (
-                <input type="checkbox" id={getName(i.name)} className="checkmark" />
-              )}
-              <label htmlFor={getName(i.name)}>{i.name}</label>
-            </li>
-          ))
-        ) : (
-          <li>Нет данных</li>
-        )}
-      </ul>
-    </div>
+    <li key={props.name} className="entity-item">
+      {props.entities ? (
+        <button className="attribute-entity-button">
+          <i className="fas fa-angle-right" />
+        </button>
+      ) : (
+        <input type="checkbox" id={getName(props.name)} className="checkmark" onChange={props.onSelectEntity} />
+      )}
+      <label htmlFor={getName(props.name)}>{props.name}</label>
+    </li>
   );
 };
