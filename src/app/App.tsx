@@ -11,9 +11,9 @@ interface IAttributeFilter {
 }
 interface IState {
   statusMessage: IEnityListMessage;
-  erModel: ERModel | null;
+  erModel?: ERModel;
   entities: Entities;
-  selectedEntity: IEntity | undefined;
+  selectedEntity?: IEntity;
   selectedAttributes: IAttributeFilter[];
   treeData?: ITreeNode;
 }
@@ -22,10 +22,10 @@ export class App extends React.PureComponent<any, IState> {
   public state = {
     statusMessage: {},
     entities: {},
-    selectedEntity: undefined,
+    erModel: undefined,
     treeData: undefined,
+    selectedEntity: undefined,
     selectedAttributes: [],
-    erModel: null
   };
 
   public componentDidMount() {
@@ -67,14 +67,11 @@ export class App extends React.PureComponent<any, IState> {
       .then(erModel => {
         this.setState({
           statusMessage: { loadingData: false, loadingText: '', loadingError: false },
-          erModel,
-          entities: erModel.entities
+          erModel
         });
       })
       .catch(e =>
         this.setState({
-          erModel: null,
-          selectedEntity: undefined,
           statusMessage: { loadingData: false, loadingText: `Ошибка: ${e.message}`, loadingError: true }
         })
       );
@@ -83,7 +80,6 @@ export class App extends React.PureComponent<any, IState> {
   private handleLoadEntities = () => {
     this.setState(
       {
-        erModel: null,
         statusMessage: { loadingData: true, loadingText: 'Загрузка данных...', loadingError: false }
       },
       this.getData
@@ -114,11 +110,15 @@ export class App extends React.PureComponent<any, IState> {
   };
 
   public render() {
+    //  const list = !!this.state.erModel ?  Object.keys((this.state.erModel! as ERModel).entities) : []
+    const {erModel} = this.state;
+    // const list = !!erModel ? Object.keys(erModel.entities) : []
+    const list = !!this.state.erModel && Object.keys(erModel.entities) || []
     return (
       <div className="App">
         <main className="application-main" role="main">
           <EntityInspector
-            list={this.state.entities}
+            list={list}
             treeData={this.state.treeData}
             statusMessage={this.state.statusMessage}
             onLoadMockEntities={this.handleLoadMockEntities}

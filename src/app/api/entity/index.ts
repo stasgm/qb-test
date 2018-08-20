@@ -1,4 +1,4 @@
-import { ERModel } from 'gdmn-orm';
+import { ERModel, deserializeERModel } from 'gdmn-orm';
 import { IEntity } from '@src/app/model';
 import { entityList } from '@src/app/api/entity/mockData';
 
@@ -23,28 +23,8 @@ const fetchData = async (): Promise<ERModel> => {
   const response = await fetch(ermodelsURL);
   if (!response.ok) throw new Error(response.statusText);
 
-  const model = await response.json();
-  // console.log(model.entities.GD_USER);
-  return model;
+  return deserializeERModel(JSON.parse(await (response.json())));;
 };
-
-/* const fetchData = async (): Promise<IEntity[]> => {
-  const ermodelsURL = `${baseURL}${config.server.paths.er}`;
-  const response = await fetch(ermodelsURL);
-  if (!response.ok) throw new Error(response.statusText);
-  const list: {
-    entities: IEntity[];
-  } = await response.json();
-  return mapToEntities(list.entities);
-}; */
-
-/* const fetchDataAsync = (): Promise<IEntity[]> => {
-  const ermodelsURL = `${baseURL}${config.server.paths.er}`;
-
-  return fetch(ermodelsURL)
-    .then(response => response.json())
-    .then(mapToEntities);
-}; */
 
 export const entityAPI = {
   fetchData,
