@@ -1,64 +1,83 @@
 import React from 'react';
-import { EntityInspector, ITreeNode, FilterBox, AttributeBox, IEnityListMessage } from '@src/app/components';
-import { IEntity, IAttribute } from '@src/app/model';
+import shortid from 'shortid';
 import { entityAPI } from '@src/app/api/entity';
-import { EntityLink, EntityQuery, ERModel, Entities, Entity } from 'gdmn-orm';
+import {
+  EntityLink,
+  EntityQuery,
+  ERModel,
+  EntityAttribute,
+  SetAttribute,
+  DetailAttribute,
+  ParentAttribute
+} from 'gdmn-orm';
+import { EntityInspector, ITreeNode, FilterBox, AttributeBox, IEnityListMessage } from '@src/app/components';
 import './App.css';
 
 interface IAttributeFilter {
   entityAlias: string;
   fielName: string;
 }
+
+interface IEntityFilter {
+  entityAlias: string;
+  entityName: string;
+}
 interface IState {
   statusMessage: IEnityListMessage;
   erModel?: ERModel;
-  entities: Entities;
-  selectedEntity?: IEntity;
+  selectedEntity?: IEntityFilter;
   selectedAttributes: IAttributeFilter[];
   treeData?: ITreeNode;
 }
 
 export class App extends React.PureComponent<any, IState> {
-  public state = {
+  public state: Readonly<IState> = {
     statusMessage: {},
-    entities: {},
     erModel: undefined,
     treeData: undefined,
     selectedEntity: undefined,
-    selectedAttributes: [],
+    selectedAttributes: []
   };
 
   public componentDidMount() {
     this.handleLoadMockEntities();
   }
 
-  private updateTreeData = (item: IEntity | undefined) => () => {
-    if (item === undefined) {
+  private updateTreeData = (): void => {
+    const { erModel, selectedEntity } = this.state;
+    if (!erModel || !selectedEntity) {
       this.setState({ treeData: undefined });
       return;
     }
 
-    let attributes: ITreeNode[] = [];
-    if (item.attributes !== undefined) {
-      attributes = item.attributes.map((i: IAttribute) => {
-        if (i.type === 'EntityAttribute') {
-          return { name: i.name, entities: i.references };
-        } else {
-          return { name: i.name };
-        }
-      });
-    }
+    const attributeList = erModel.entity(selectedEntity.entityName).attributes;
 
-    this.setState({ treeData: { name: item.name, children: attributes } });
+    const attributes: ITreeNode[] = Object.values(attributeList).map(attr => {
+      return EntityAttribute.isType(attr) &&
+        !SetAttribute.isType(attr) &&
+        !ParentAttribute.isType(attr) &&
+        !DetailAttribute.isType(attr)
+        ? { name: attr.name, entities: Object.values(attr.entities).map(i => i.name), parentAlias: '' }
+        : { name: attr.name, parentAlias: '' };
+    });
+
+    this.setState({ treeData: { name: selectedEntity.entityName, children: attributes, parentAlias: '' } });
   };
 
   private handleLoadMockEntities = () => {
-    entityAPI.fetchMockData().then(entities => {
-      /* this.setState({
-        statusMessage: { loadingData: false, loadingText: '', loadingError: false },
-        entities
-       });*/
-    });
+    entityAPI
+      .fetchMockData()
+      .then(erModel => {
+        this.setState({
+          statusMessage: { loadingData: false, loadingText: '', loadingError: false },
+          erModel
+        });
+      })
+      .catch(e =>
+        this.setState({
+          statusMessage: { loadingData: false, loadingText: `Ошибка: ${e.message}`, loadingError: true }
+        })
+      );
   };
 
   private getData = () => {
@@ -86,34 +105,37 @@ export class App extends React.PureComponent<any, IState> {
     );
   };
 
-  private handleSelectEntity = (id: string, checked: boolean) => {
+  private handleSelectEntity = (name: string, checked: boolean) => {
     if (!checked) return;
     // TODO: Обработать чекед\анчекед. убрать handleUnSelectEntity
 
-    /*    if (this.state.erModel !== undefined) {
-    EntityLink.inspectorToObject(this.state.erModel, )
-    const selectedEntity = this.state.entities.find((i: IEntity) => i.id === id);
-    if (selectedEntity) {
-      this.setState({ selectedEntity }, this.updateTreeData(selectedEntity));
-    } */
+    const { erModel } = this.state;
+
+    if (!erModel) return;
+
+    const entityName = erModel.entities[name].name;
+
+    if (!entityName) return;
+
+    const entityAlias = shortid.generate();
+
+    this.setState({ selectedEntity: { entityName, entityAlias } }, this.updateTreeData);
   };
 
   private handleUnSelectEntity = () => {
-    this.setState({ selectedEntity: undefined, selectedAttributes: [] }, this.updateTreeData(undefined));
+    this.setState({ selectedEntity: undefined, selectedAttributes: [] }, this.updateTreeData);
   };
 
-  private handleSelectAttribute = (name: string, checked: boolean) => {
-    // const newList = this.state.selectedAttributes.map((i: IAttributeFilter) => i.fielName === name)
-    /*     if (checked) {
-      this.setState({ selectedAttributes: selectedAttribute }, this.updateTreeData(selectedAttribute));
-    } */
+  private handleSelectAttribute = (parentAlias: string, name: string, checked: boolean) => {
+    // const newList = this.state.selectedAttributes.map((i: IAttributeFilter) => i.fielName === name);
+    const attr: IAttributeFilter = { entityAlias: parentAlias, fielName: name };
+    if (checked) {
+      this.setState({ selectedAttributes: [...this.state.selectedAttributes, attr] }, this.updateTreeData);
+    }
   };
 
   public render() {
-    //  const list = !!this.state.erModel ?  Object.keys((this.state.erModel! as ERModel).entities) : []
-    const {erModel} = this.state;
-    // const list = !!erModel ? Object.keys(erModel.entities) : []
-    const list = !!this.state.erModel && Object.keys(erModel.entities) || []
+    const list = !!this.state.erModel ? Object.keys(this.state.erModel.entities) : [];
     return (
       <div className="App">
         <main className="application-main" role="main">
@@ -128,7 +150,7 @@ export class App extends React.PureComponent<any, IState> {
             onSelectAttribute={this.handleSelectAttribute}
           />
           <AttributeBox /* list={this.state.selectedAttributes} onDeleteAttribute={this.handleUnselectAttribute}  */ />
-          <FilterBox list={this.state.selectedEntity} onUnselectEntity={this.handleSelectEntity} />
+          <FilterBox /* list={this.state.selectedEntity} onUnselectEntity={this.handleSelectEntity} */ />
         </main>
       </div>
     );

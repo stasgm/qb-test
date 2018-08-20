@@ -3,7 +3,6 @@ import React from 'react';
 import { EntityList, IEnityListMessage } from '@src/app/components/EntityInspector/EntityList';
 import { EntityTreeView, ITreeNode } from '@src/app/components/EntityInspector/EntityTreeView';
 
-
 export { ITreeNode, IEnityListMessage };
 
 import './index.css';
@@ -16,7 +15,7 @@ interface IProps {
   onLoadEntities: () => void;
   onSelectEntity: (id: string, checked: boolean) => void;
   onUnselectEntity: () => void;
-  onSelectAttribute: (id: string, checked: boolean) => void;
+  onSelectAttribute: (parentAlias: string, name: string, checked: boolean) => void;
 }
 
 interface IState {

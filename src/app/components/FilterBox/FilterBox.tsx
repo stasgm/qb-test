@@ -5,9 +5,10 @@ import { Entity } from '@src/app/components/FilterBox/Entity';
 import './index.css';
 
 interface IProps {
-  list: IEntity | undefined;
+  attribute?: string;
+  // list :  | undefined;
   // onDeleteEntity: (id: string) => void;
-  onUnselectEntity: (id: string, checked: boolean) => void;
+  // onUnselectEntity: (id: string, checked: boolean) => void;
 }
 
 export class FilterBox extends React.PureComponent<IProps> {

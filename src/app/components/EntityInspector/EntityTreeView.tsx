@@ -3,6 +3,7 @@ import memoize from 'memoize-one';
 import { Filter } from '@src/app/components/EntityInspector/Filter';
 export interface ITreeNode {
   name: string;
+  parentAlias: string;
   loading?: boolean;
   checked?: boolean;
   toggled?: boolean;
@@ -14,7 +15,7 @@ interface IAppProps {
   data: ITreeNode;
   onClear: () => void;
 
-  onSelectAttribute: (id: string, checked: boolean) => void;
+  onSelectAttribute: (parentAlias: string, name: string, checked: boolean) => void;
 }
 
 interface IState {
@@ -41,12 +42,12 @@ export class EntityTreeView extends React.PureComponent<IAppProps, IState> {
     this.setState({ filterText: '' });
   };
 
-  private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    return this.props.onSelectAttribute(id, event.target.checked);
+  private handleChange = (parentAlias: string, name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    return this.props.onSelectAttribute(parentAlias, name, event.target.checked);
   };
 
   private getListItemNode = (item: ITreeNode) => (
-    <AttributeBlock {...item} onSelectEntity={this.handleChange(item.name)} key={item.name} />
+    <AttributeBlock {...item} onSelectEntity={this.handleChange(item.parentAlias, item.name)} key={item.name} />
   );
 
   private getStatusMessageNode = (filteredList: ITreeNode[]) => (

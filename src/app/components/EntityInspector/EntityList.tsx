@@ -4,6 +4,7 @@ import memoize from 'memoize-one';
 import { Filter } from '@src/app/components/EntityInspector/Filter';
 
 import './index.css';
+import { rusPrepositions } from 'gdmn-nlp';
 
 interface IState {
   filterText: string;
@@ -24,7 +25,7 @@ interface IProps {
 }
 
 export class EntityList extends React.PureComponent<IProps, IState> {
-  public state = {
+  public state: Readonly<IState> = {
     filterText: ''
   };
 
@@ -45,7 +46,7 @@ export class EntityList extends React.PureComponent<IProps, IState> {
   };
 
   private getListItemNode = (item: string) => (
-    <EntityBlock {...item} onSelectEntity={this.handleChange(item)} key={item} />
+    <EntityBlock name={item} onSelectEntity={this.handleChange(item)} key={item} />
   );
 
   private getStatusMessageNode = (filteredList: string[]) => (
@@ -91,11 +92,11 @@ interface IEntityEvent {
   onSelectEntity: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const EntityBlock = (props: string & IEntityEvent) => {
+const EntityBlock = (props: { name: string } & IEntityEvent) => {
   return (
     <li className="entity-item">
-      <input className="checkmark" id={getName(props)} type="checkbox" onChange={props.onSelectEntity} />
-      <label htmlFor={getName(props)}>{props}</label>
+      <input className="checkmark" id={getName(props.name)} type="checkbox" onChange={props.onSelectEntity} />
+      <label htmlFor={getName(props.name)}>{props.name}</label>
     </li>
   );
 };
