@@ -23,7 +23,7 @@ interface IState {
 }
 
 export class EntityTreeView extends React.PureComponent<IAppProps, IState> {
-  public state = {
+  public state: Readonly<IState> = {
     filterText: ''
   };
 
@@ -52,7 +52,7 @@ export class EntityTreeView extends React.PureComponent<IAppProps, IState> {
 
   private getStatusMessageNode = (filteredList: ITreeNode[]) => (
     <div className="entity-list">
-      {this.props.data === undefined ? (
+      {!this.props.data ? (
         <div className="loading-message">Совпадений не найдено</div>
       ) : (
         <ul>{filteredList.map(this.getListItemNode)}</ul>
@@ -92,13 +92,19 @@ interface IEntityEvent {
 
 const AttributeBlock = (props: ITreeNode & IEntityEvent) => {
   return (
-    <li key={props.name} className="entity-item">
+    <li key={props.name || props.parentAlias} className="entity-item">
       {props.entities ? (
         <button className="attribute-entity-button">
           <i className="fas fa-angle-right" />
         </button>
       ) : (
-        <input type="checkbox" id={getName(props.name)} className="checkmark" onChange={props.onSelectEntity} />
+        <input
+          type="checkbox"
+          id={getName(props.name)}
+          className="checkmark"
+          checked={props.checked}
+          onChange={props.onSelectEntity}
+        />
       )}
       <label htmlFor={getName(props.name)}>{props.name}</label>
     </li>

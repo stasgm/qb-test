@@ -19,7 +19,7 @@ export const Attribute: React.SFC<IAttributeParams & IEntityEvent> = props => (
       <input type="checkbox" checked={props.visible} key={props.id} onChange={props.onChange} />
     </td>
     <td>
-      {props.expression.enityName}.{props.expression.fieldName}
+      {props.expression.entityName}.{props.expression.fieldName}
     </td>
     <td>
       <input

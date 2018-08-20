@@ -13,9 +13,9 @@ import {
 import { EntityInspector, ITreeNode, FilterBox, AttributeBox, IEnityListMessage } from '@src/app/components';
 import './App.css';
 
-interface IAttributeFilter {
+export interface IAttributeFilter {
   entityAlias: string;
-  fielName: string;
+  fieldName: string;
 }
 
 interface IEntityFilter {
@@ -53,12 +53,21 @@ export class App extends React.PureComponent<any, IState> {
     const attributeList = erModel.entity(selectedEntity.entityName).attributes;
 
     const attributes: ITreeNode[] = Object.values(attributeList).map(attr => {
+      const checked = !!this.state.selectedAttributes.find(
+        (i: IAttributeFilter) => i.entityAlias === selectedEntity.entityName && i.fieldName === attr.name
+      );
+
       return EntityAttribute.isType(attr) &&
         !SetAttribute.isType(attr) &&
         !ParentAttribute.isType(attr) &&
         !DetailAttribute.isType(attr)
-        ? { name: attr.name, entities: Object.values(attr.entities).map(i => i.name), parentAlias: '' }
-        : { name: attr.name, parentAlias: '' };
+        ? {
+            name: attr.name,
+            entities: Object.values(attr.entities).map(i => i.name),
+            parentAlias: selectedEntity.entityName,
+            checked
+          }
+        : { name: attr.name, parentAlias: selectedEntity.entityName, checked };
     });
 
     this.setState({ treeData: { name: selectedEntity.entityName, children: attributes, parentAlias: '' } });
@@ -117,9 +126,9 @@ export class App extends React.PureComponent<any, IState> {
 
     if (!entityName) return;
 
-    const entityAlias = shortid.generate();
+    // const entityAlias = shortid.generate();
 
-    this.setState({ selectedEntity: { entityName, entityAlias } }, this.updateTreeData);
+    this.setState({ selectedEntity: { entityName, entityAlias: entityName } }, this.updateTreeData);
   };
 
   private handleUnSelectEntity = () => {
@@ -127,11 +136,16 @@ export class App extends React.PureComponent<any, IState> {
   };
 
   private handleSelectAttribute = (parentAlias: string, name: string, checked: boolean) => {
-    // const newList = this.state.selectedAttributes.map((i: IAttributeFilter) => i.fielName === name);
-    const attr: IAttributeFilter = { entityAlias: parentAlias, fielName: name };
+    const attr: IAttributeFilter = { entityAlias: parentAlias, fieldName: name };
     if (checked) {
       this.setState({ selectedAttributes: [...this.state.selectedAttributes, attr] }, this.updateTreeData);
+      return;
     }
+
+    const newList: IAttributeFilter[] = this.state.selectedAttributes.filter(
+      i => !(i.fieldName === name && i.entityAlias === parentAlias)
+    );
+    this.setState({ selectedAttributes: newList }, this.updateTreeData);
   };
 
   public render() {
@@ -149,7 +163,11 @@ export class App extends React.PureComponent<any, IState> {
             onUnselectEntity={this.handleUnSelectEntity}
             onSelectAttribute={this.handleSelectAttribute}
           />
-          <AttributeBox /* list={this.state.selectedAttributes} onDeleteAttribute={this.handleUnselectAttribute}  */ />
+          <AttributeBox
+            list={this.state.selectedAttributes.map(i => ({
+              expression: { entityName: i.entityAlias, fieldName: i.fieldName }
+            }))} /* onDeleteAttribute={this.handleUnselectAttribute}  */
+          />
           <FilterBox /* list={this.state.selectedEntity} onUnselectEntity={this.handleSelectEntity} */ />
         </main>
       </div>

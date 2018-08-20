@@ -1,7 +1,7 @@
-import React, { ReactEventHandler, Component } from 'react';
-import { IAttribute } from '@src/app/model';
+import React from 'react';
+import { IAttributeFilter } from '@src/app/App';
 import { Attribute } from '@src/app/components/AttributeBox/Attribute';
-import { sortType, SortType } from '../../types';
+import { sortType } from '../../types';
 
 import './index.css';
 
@@ -12,64 +12,74 @@ import './index.css';
  */
 
 export interface IAttributeParams {
-  id: string;
-  visible: boolean;
-  expression: { enityName: string; fieldName: string };
-  fieldAlias: string;
-  sortType: string;
+  id?: string;
+  visible?: boolean;
+  expression: { entityName: string; fieldName: string };
+  fieldAlias?: string;
+  sortType?: string;
 }
 
 interface IState {
   attributeList: IAttributeParams[];
 }
 
-export class AttributeBox extends Component<any, IState> {
-  public state = {
-    attributeList: [
-      {
+interface IProps {
+  list: IAttributeParams[];
+}
+
+export class AttributeBox extends React.PureComponent<IProps, IState> {
+  public state: Readonly<IState> = {
+    attributeList: []
+  };
+  /*       {
         id: '0',
         visible: true,
-        expression: { enityName: 'Company', fieldName: 'ID' },
+        expression: { entityName: 'Company', fieldName: 'ID' },
         fieldAlias: 'Идентифиатор',
         sortType: sortType[0]
       },
       {
         id: '1',
         visible: true,
-        expression: { enityName: 'Company', fieldName: 'NAME' },
+        expression: { entityName: 'Company', fieldName: 'NAME' },
         fieldAlias: 'Наименование',
         sortType: sortType[0]
       },
       {
         id: '2',
         visible: true,
-        expression: { enityName: 'Company', fieldName: 'TYPE' },
+        expression: { entityName: 'Company', fieldName: 'TYPE' },
         fieldAlias: 'Тип',
         sortType: sortType[0]
       },
       {
         id: '3',
         visible: true,
-        expression: { enityName: 'Folder', fieldName: 'ID' },
+        expression: { entityName: 'Folder', fieldName: 'ID' },
         fieldAlias: 'Идентифиатор',
         sortType: sortType[1]
       },
       {
         id: '4',
         visible: true,
-        expression: { enityName: 'Folder', fieldName: 'NAME' },
+        expression: { entityName: 'Folder', fieldName: 'NAME' },
         fieldAlias: 'Наименование',
         sortType: sortType[0]
       },
       {
         id: '5',
         visible: true,
-        expression: { enityName: 'Folder', fieldName: 'PARENT' },
+        expression: { entityName: 'Folder', fieldName: 'PARENT' },
         fieldAlias: 'Родитель',
         sortType: sortType[0]
       }
     ]
-  };
+  }; */
+
+  /*   public componentWillReceiveProps = (nextProps: IProps) => {
+    // const attributeList: IAttributeParams[] = nextProps.list.map(i => ({expression: { enityName: i.entityAlias, fieldName: i.fielName }));
+    // this.setState({ attributeList });
+  } */
 
   private handleChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAttributeList: IAttributeParams[] = this.state.attributeList.map(
@@ -110,13 +120,13 @@ export class AttributeBox extends Component<any, IState> {
             </tr>
           </thead>
           <tbody>
-            {this.state.attributeList.map((item: IAttributeParams) => (
+            {this.props.list.map((item: IAttributeParams) => (
               <Attribute
                 {...item}
-                onChange={this.handleChange(item.id)}
-                onChangeSortType={this.handleChangeSortType(item.id)}
-                onChangeFieldAlias={this.handleChangeFieldAlias(item.id)}
-                /* onClickDelete={this.props.deleteAttribute} */ key={item.id!}
+                onChange={this.handleChange(item.expression.entityName)}
+                onChangeSortType={this.handleChangeSortType(item.expression.entityName)}
+                onChangeFieldAlias={this.handleChangeFieldAlias(item.expression.entityName)}
+                /* onClickDelete={this.props.deleteAttribute} */ key={item.expression.fieldName||item.expression.fieldName}
               />
             ))}
           </tbody>
