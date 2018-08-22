@@ -126,7 +126,9 @@ export class AttributeBox extends React.PureComponent<IProps, IState> {
                 onChange={this.handleChange(item.expression.entityName)}
                 onChangeSortType={this.handleChangeSortType(item.expression.entityName)}
                 onChangeFieldAlias={this.handleChangeFieldAlias(item.expression.entityName)}
-                /* onClickDelete={this.props.deleteAttribute} */ key={item.expression.fieldName||item.expression.fieldName}
+                /* onClickDelete={this.props.deleteAttribute} */ key={
+                  item.expression.fieldName || item.expression.fieldName
+                }
               />
             ))}
           </tbody>
