@@ -1,93 +1,78 @@
-import PropTypes from 'prop-types';
+import PropTypes, { array } from 'prop-types';
 import React, { Component } from 'react';
+// @ts-ignore
 import InfiniteTree from 'infinite-tree';
 import VirtualList from 'react-tiny-virtual-list';
 
-const lcfirst = (str) => {
+const lcfirst = (str: string) => {
     str += '';
     return str.charAt(0).toLowerCase() + str.substr(1);
 };
 
-export default class extends Component {
-    static displayName = 'InfiniteTree';
-    static propTypes = {
-        // Whether to open all nodes when tree is loaded.
-        autoOpen: PropTypes.bool,
+interface IBaseProps {
+  el?: string;
+  className? :string;
+  style? :string;
+  // [name: string]: object;
+}
 
-        // Whether or not a node is selectable in the tree.
-        selectable: PropTypes.bool,
+interface IProps {
+  // Whether to open all nodes when tree is loaded.
+  autoOpen?: boolean;
+  // Whether or not a node is selectable in the tree.
+  selectable?: boolean;
+  // Specifies the tab order to make tree focusable.
+  tabIndex?: number;
+  // Tree data structure, or a collection of tree data structures.
+  data?: [] | object;
+  // Width of the tree.
+  width?: string | number;
+  // Height of the tree.
+  height?: string | number;
+  // Either a fixed height, an array containing the heights of all the rows, or a function that returns the height of a row given its index: `(index: number): number`
+  rowHeight?: number | [] | (() => void);
+  // A row renderer for rendering a tree node.
+  rowRenderer?: () => void;
+  // Loads nodes on demand.
+  loadNodes?: () => void;
+  // Provides a function to determine if a node can be selected or deselected. The function must return `true` or `false`. This function will not take effect if `selectable` is not `true`.
+  shouldSelectNode?: () => void;
+  // Controls the scroll offset.
+  scrollOffset?: number;
+  // Node index to scroll to.
+  scrollToIndex?: number;
+  // Callback invoked whenever the scroll offset changes.
+  onScroll?: () => void;
+  // Callback invoked before updating the tree.
+  onContentWillUpdate?: () => void;
+  // Callback invoked when the tree is updated.
+  onContentDidUpdate?: () => void;
+  // Callback invoked when a node is opened.
+  onOpenNode?: () => void;
+  // Callback invoked when a node is closed.
+  onCloseNode?: () => void;
+  // Callback invoked when a node is selected or deselected.
+  onSelectNode?: () => void;
+  // Callback invoked before opening a node.
+  onWillOpenNode?: () => void;
+  // Callback invoked before closing a node.
+  onWillCloseNode?: () => void;
+  // Callback invoked before selecting or deselecting a node.
+  onWillSelectNode?: () => void;
+}
 
-        // Specifies the tab order to make tree focusable.
-        tabIndex: PropTypes.number,
+interface IState {
+  nodes: [];
+}
 
-        // Tree data structure, or a collection of tree data structures.
-        data: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.object
-        ]),
+interface ITreeObject {
+  filter: () => void;
+}
 
-        // Width of the tree.
-        width: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]).isRequired,
+export class InfiniteTree extends Component<IProps & IBaseProps, IState> {
+    public static displayName: string = 'InfiniteTree';
 
-        // Height of the tree.
-        height: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]).isRequired,
-
-        // Either a fixed height, an array containing the heights of all the rows, or a function that returns the height of a row given its index: `(index: number): number`
-        rowHeight: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.array,
-            PropTypes.func
-        ]).isRequired,
-
-        // A row renderer for rendering a tree node.
-        rowRenderer: PropTypes.func,
-
-        // Loads nodes on demand.
-        loadNodes: PropTypes.func,
-
-        // Provides a function to determine if a node can be selected or deselected. The function must return `true` or `false`. This function will not take effect if `selectable` is not `true`.
-        shouldSelectNode: PropTypes.func,
-
-        // Controls the scroll offset.
-        scrollOffset: PropTypes.number,
-
-        // Node index to scroll to.
-        scrollToIndex: PropTypes.number,
-
-        // Callback invoked whenever the scroll offset changes.
-        onScroll: PropTypes.func,
-
-        // Callback invoked before updating the tree.
-        onContentWillUpdate: PropTypes.func,
-
-        // Callback invoked when the tree is updated.
-        onContentDidUpdate: PropTypes.func,
-
-        // Callback invoked when a node is opened.
-        onOpenNode: PropTypes.func,
-
-        // Callback invoked when a node is closed.
-        onCloseNode: PropTypes.func,
-
-        // Callback invoked when a node is selected or deselected.
-        onSelectNode: PropTypes.func,
-
-        // Callback invoked before opening a node.
-        onWillOpenNode: PropTypes.func,
-
-        // Callback invoked before closing a node.
-        onWillCloseNode: PropTypes.func,
-
-        // Callback invoked before selecting or deselecting a node.
-        onWillSelectNode: PropTypes.func
-    };
-    static defaultProps = {
+    public static defaultProps = {
         autoOpen: false,
         selectable: true,
         tabIndex: 0,
@@ -95,12 +80,17 @@ export default class extends Component {
         width: '100%'
     };
 
-    tree = null;
-    state = {
+    public tree: ITreeObject | null = null;
+
+    public state: Readonly<IState> = {
         nodes: []
     };
 
-    eventHandlers = {
+    public filter() {
+      return
+    }
+
+    public eventHandlers = {
         onContentWillUpdate: null,
         onContentDidUpdate: null,
         onOpenNode: null,
@@ -111,7 +101,7 @@ export default class extends Component {
         onWillSelectNode: null
     };
 
-    componentDidMount() {
+    public componentDidMount() {
         const { children, className, style, ...options } = this.props;
 
         if (options.el !== undefined) {
@@ -196,7 +186,8 @@ export default class extends Component {
             this.tree.on(eventName, this.eventHandlers[key]);
         });
     }
-    componentWillUnmount() {
+
+    public componentWillUnmount() {
         Object.keys(this.eventHandlers).forEach(key => {
             if (!this.eventHandlers[key]) {
                 return;
@@ -210,7 +201,8 @@ export default class extends Component {
         this.tree.destroy();
         this.tree = null;
     }
-    render() {
+
+    public render() {
         const {
             autoOpen,
             selectable,
