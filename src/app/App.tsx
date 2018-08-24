@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { Children } from 'react';
 import shortid from 'shortid';
 import { entityAPI } from '@src/app/api/entity';
+import { ReactTree } from '@src/app/components/EntityInspector/ReactTree';
 import {
   EntityLink,
   EntityQuery,
+  Entity,
+  Attribute,
   ERModel,
+  EntityQueryField,
   EntityAttribute,
   SetAttribute,
   DetailAttribute,
@@ -13,30 +17,51 @@ import {
 import { EntityInspector, ITreeNode, FilterBox, AttributeBox, IEnityListMessage } from '@src/app/components';
 import './App.css';
 
-export interface IAttributeFilter {
-  entityAlias: string;
-  fieldName: string;
-}
-
-interface IEntityFilter {
-  entityAlias: string;
-  entityName: string;
-}
 interface IState {
   statusMessage: IEnityListMessage;
   erModel?: ERModel;
-  selectedEntity?: IEntityFilter;
-  selectedAttributes: IAttributeFilter[];
+  attributeList: EntityQueryField[];
+  entityName?: string;
+  entityLink?: EntityLink;
   treeData?: ITreeNode;
 }
+
+const data: ITreeNode = {
+  id: 'fruit',
+  name: 'gd_good',
+  children: [
+    {
+      id: 'id',
+      name: 'id'
+    },
+    {
+      id: 'apple',
+      name: 'name'
+    },
+    {
+      id: 'groupkey',
+      name: 'groupkey',
+      loadOnDemand: true,
+      children: [
+        {
+          id: 'id',
+          name: 'id'
+        },
+        {
+          id: 'name',
+          name: 'name'
+        }
+      ]
+    }
+  ]
+};
 
 export class App extends React.PureComponent<any, IState> {
   public state: Readonly<IState> = {
     statusMessage: {},
-    erModel: undefined,
+    attributeList: [],
+    entityLink: undefined,
     treeData: undefined,
-    selectedEntity: undefined,
-    selectedAttributes: []
   };
 
   public componentDidMount() {
@@ -44,15 +69,34 @@ export class App extends React.PureComponent<any, IState> {
   }
 
   private updateTreeData = (): void => {
-    const { erModel, selectedEntity } = this.state;
-    if (!erModel || !selectedEntity) {
+    const { erModel, entityLink } = this.state;
+
+    if (!erModel || !entityLink) {
       this.setState({ treeData: undefined });
       return;
     }
 
-    const attributeList = erModel.entity(selectedEntity.entityName).attributes;
+    const treeChildren: ITreeNode[] = Object.values(entityLink.entity.attributes).map((attr: Attribute) => {
+      return {
+        id: attr.name,
+        name: attr.name,
+        children: []
+      };
+    });
 
-    const attributes: ITreeNode[] = Object.values(attributeList).map(attr => {
+
+    this.setState({ treeData: data });
+    /* this.setState({
+      treeData: {
+        id: entityLink.entity.name,
+        name: entityLink.entity.name,
+        children: treeChildren
+      } */
+
+    // entityLink.entity.attributes
+    // const attributeList = entityLink.entity.attributes;
+
+    /*   const attributes: ITreeNode[] = Object.values(attributeList).map(attr => {
       const checked = !!this.state.selectedAttributes.find(
         (i: IAttributeFilter) => i.entityAlias === selectedEntity.entityName && i.fieldName === attr.name
       );
@@ -62,15 +106,23 @@ export class App extends React.PureComponent<any, IState> {
         !ParentAttribute.isType(attr) &&
         !DetailAttribute.isType(attr)
         ? {
+            id: attr.name,
             name: attr.name,
             entities: Object.values(attr.entities).map(i => i.name),
             parentAlias: selectedEntity.entityName,
             checked
           }
-        : { name: attr.name, parentAlias: selectedEntity.entityName, checked };
+        : { id: attr.name, name: attr.name, parentAlias: selectedEntity.entityName, checked };
     });
 
-    this.setState({ treeData: { name: selectedEntity.entityName, children: attributes, parentAlias: '' } });
+    this.setState({
+      treeData: {
+        id: selectedEntity.entityName,
+        name: selectedEntity.entityName,
+        children: attributes,
+        parentAlias: ''
+      }
+    }); */
   };
 
   private handleLoadMockEntities = () => {
@@ -119,37 +171,38 @@ export class App extends React.PureComponent<any, IState> {
     // TODO: Обработать чекед\анчекед. убрать handleUnSelectEntity
 
     const { erModel } = this.state;
-
     if (!erModel) return;
 
-    const entityName = erModel.entities[name].name;
+    const newEntity: Entity = erModel.entities[name];
+    if (!newEntity) return;
 
-    if (!entityName) return;
+    const entityLink: EntityLink = new EntityLink(newEntity, '', this.state.attributeList);
 
-    // const entityAlias = shortid.generate();
+    this.setState({ entityLink }, this.updateTreeData);
 
-    this.setState({ selectedEntity: { entityName, entityAlias: entityName } }, this.updateTreeData);
+    // this.setState({ entityName }, this.updateTreeData);
   };
 
   private handleUnSelectEntity = () => {
-    this.setState({ selectedEntity: undefined, selectedAttributes: [] }, this.updateTreeData);
+    // this.setState({ selectedEntity: undefined, selectedAttributes: [] }, this.updateTreeData);
   };
 
   private handleSelectAttribute = (parentAlias: string, name: string, checked: boolean) => {
-    const attr: IAttributeFilter = { entityAlias: parentAlias, fieldName: name };
-    if (checked) {
-      this.setState({ selectedAttributes: [...this.state.selectedAttributes, attr] }, this.updateTreeData);
-      return;
-    }
-
-    const newList: IAttributeFilter[] = this.state.selectedAttributes.filter(
-      i => !(i.fieldName === name && i.entityAlias === parentAlias)
-    );
-    this.setState({ selectedAttributes: newList }, this.updateTreeData);
+    // entityLink
+    // const attr: IAttributeFilter = { entityAlias: parentAlias, fieldName: name };
+    // if (checked) {
+    //   this.setState({ selectedAttributes: [...this.state.selectedAttributes, attr] }, this.updateTreeData);
+    //   return;
+    // }
+    // const newList: IAttributeFilter[] = this.state.selectedAttributes.filter(
+    //   i => !(i.fieldName === name && i.entityAlias === parentAlias)
+    // );
+    // this.setState({ selectedAttributes: newList }, this.updateTreeData);
   };
 
   public render() {
     const list = !!this.state.erModel ? Object.keys(this.state.erModel.entities) : [];
+    const { treeData } = this.state;
     return (
       <div className="App">
         <main className="application-main" role="main">
@@ -164,11 +217,12 @@ export class App extends React.PureComponent<any, IState> {
             onSelectAttribute={this.handleSelectAttribute}
           />
           <AttributeBox
-            list={this.state.selectedAttributes.map(i => ({
-              expression: { entityName: i.entityAlias, fieldName: i.fieldName }
-            }))} /* onDeleteAttribute={this.handleUnselectAttribute}  */
+            list={this.state.attributeList.map(i => ({
+              expression: { entityName: i.attribute.name, fieldName: i.attribute.name }
+            }))}
           />
-          <FilterBox /* list={this.state.selectedEntity} onUnselectEntity={this.handleSelectEntity} */ />
+          <ReactTree data={this.state.treeData} />
+          {/* <FilterBox /> */}
         </main>
       </div>
     );

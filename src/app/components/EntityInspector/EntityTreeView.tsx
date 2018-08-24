@@ -1,7 +1,9 @@
 import React from 'react';
 import memoize from 'memoize-one';
 import { Filter } from '@src/app/components/EntityInspector/Filter';
-export interface ITreeNode {
+
+/* export interface ITreeNode {
+  id?: string;
   name: string;
   parentAlias: string;
   loading?: boolean;
@@ -9,6 +11,13 @@ export interface ITreeNode {
   toggled?: boolean;
   entities?: string[];
   children?: ITreeNode[] | undefined;
+} */
+
+export interface ITreeNode {
+  id: string;
+  name: string;
+  loadOnDemand?: boolean;
+  children?: ITreeNode[];
 }
 
 interface IAppProps {
@@ -47,7 +56,7 @@ export class EntityTreeView extends React.PureComponent<IAppProps, IState> {
   };
 
   private getListItemNode = (item: ITreeNode) => (
-    <AttributeBlock {...item} onSelectEntity={this.handleChange(item.parentAlias, item.name)} key={item.name} />
+    <AttributeBlock {...item} onSelectEntity={this.handleChange(item.name, item.name)} key={item.name} />
   );
 
   private getStatusMessageNode = (filteredList: ITreeNode[]) => (
@@ -92,8 +101,8 @@ interface IEntityEvent {
 
 const AttributeBlock = (props: ITreeNode & IEntityEvent) => {
   return (
-    <li key={props.name || props.parentAlias} className="entity-item">
-      {props.entities ? (
+    <li key={props.name || props.name} className="entity-item">
+      {props.name === '' ? (
         <button className="attribute-entity-button">
           <i className="fas fa-angle-right" />
         </button>
@@ -102,7 +111,7 @@ const AttributeBlock = (props: ITreeNode & IEntityEvent) => {
           type="checkbox"
           id={getName(props.name)}
           className="checkmark"
-          checked={props.checked}
+          // checked={props.checked}
           onChange={props.onSelectEntity}
         />
       )}

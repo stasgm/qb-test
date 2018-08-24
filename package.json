@@ -61,13 +61,13 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "infinite-tree": "^1.16.2",
+    "@trendmicro/react-checkbox": "^3.4.1",
     "memoize-one": "^4.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-draggable": "^3.0.5",
-    "react-tiny-virtual-list": "^2.2.0",
-    "react-treebeard": "^2.1.0",
-    "shortid": "^2.2.13"
+    "react-infinite-tree": "^1.0.0-alpha.6",
+    "shortid": "^2.2.13",
+    "styled-components": "^3.4.5"
   }
 }

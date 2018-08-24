@@ -1,5 +1,4 @@
 import React from 'react';
-import { IAttributeFilter } from '@src/app/App';
 import { Attribute } from '@src/app/components/AttributeBox/Attribute';
 import { sortType } from '../../types';
 
