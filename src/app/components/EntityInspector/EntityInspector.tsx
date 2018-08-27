@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Entities, Entity } from 'gdmn-orm';
+import { ReactTree } from '@src/app/components/EntityInspector/ReactTree';
 import { EntityList, IEnityListMessage } from '@src/app/components/EntityInspector/EntityList';
 import { EntityTreeView, ITreeNode } from '@src/app/components/EntityInspector/EntityTreeView';
 
@@ -24,16 +24,22 @@ interface IState {
 
 export class EntityInspector extends React.PureComponent<IProps, IState> {
   public render() {
+    const { treeData } = this.props;
     return (
       <div className="left-box-container">
         <div className="qb-logo">GDMN: Query Builder</div>
-        {this.props.treeData !== undefined ? (
-          <EntityTreeView
-            data={this.props.treeData}
+        {treeData ? (
+          <ReactTree
+            data={treeData}
             onClear={this.props.onUnselectEntity}
             onSelectAttribute={this.props.onSelectAttribute}
           />
         ) : (
+          // <EntityTreeView
+          //   data={this.props.treeData}
+          //   onClear={this.props.onUnselectEntity}
+          //   onSelectAttribute={this.props.onSelectAttribute}
+          // />
           <EntityList
             list={this.props.list}
             statusMessage={this.props.statusMessage}

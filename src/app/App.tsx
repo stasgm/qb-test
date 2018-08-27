@@ -1,5 +1,4 @@
 import React, { Children } from 'react';
-import shortid from 'shortid';
 import { entityAPI } from '@src/app/api/entity';
 import { ReactTree } from '@src/app/components/EntityInspector/ReactTree';
 import {
@@ -21,7 +20,6 @@ interface IState {
   statusMessage: IEnityListMessage;
   erModel?: ERModel;
   attributeList: EntityQueryField[];
-  entityName?: string;
   entityLink?: EntityLink;
   treeData?: ITreeNode;
 }
@@ -61,7 +59,7 @@ export class App extends React.PureComponent<any, IState> {
     statusMessage: {},
     attributeList: [],
     entityLink: undefined,
-    treeData: undefined,
+    treeData: undefined
   };
 
   public componentDidMount() {
@@ -72,9 +70,24 @@ export class App extends React.PureComponent<any, IState> {
     const { erModel, entityLink } = this.state;
 
     if (!erModel || !entityLink) {
+      // Нет ER-модели => дерево пустое
       this.setState({ treeData: undefined });
       return;
     }
+
+/*     if (!entityLink) {
+      // Нет entityLink => дерево из списка enteties
+      const entityList = Object.values(erModel.entities).map((i: Entity) => i.name);
+      this.setState({ treeData: undefined, entityList });
+      const treeEntities: ITreeNode[] = Object.values(erModel.entities).map((i: Entity) => {
+        return {
+          id: i.name,
+          name: i.name
+        };
+      });
+      this.setState({ treeData: { id: 'Entities', name: 'Entities', children: treeEntities } });
+      return;
+    } */
 
     const treeChildren: ITreeNode[] = Object.values(entityLink.entity.attributes).map((attr: Attribute) => {
       return {
@@ -84,14 +97,14 @@ export class App extends React.PureComponent<any, IState> {
       };
     });
 
-
-    this.setState({ treeData: data });
-    /* this.setState({
+    // this.setState({ treeData: data });
+    this.setState({
       treeData: {
         id: entityLink.entity.name,
         name: entityLink.entity.name,
         children: treeChildren
-      } */
+      }
+    });
 
     // entityLink.entity.attributes
     // const attributeList = entityLink.entity.attributes;
@@ -129,15 +142,21 @@ export class App extends React.PureComponent<any, IState> {
     entityAPI
       .fetchMockData()
       .then(erModel => {
-        this.setState({
-          statusMessage: { loadingData: false, loadingText: '', loadingError: false },
-          erModel
-        });
+        this.setState(
+          {
+            statusMessage: { loadingData: false, loadingText: '', loadingError: false },
+            erModel
+          },
+          this.updateTreeData
+        );
       })
       .catch(e =>
-        this.setState({
-          statusMessage: { loadingData: false, loadingText: `Ошибка: ${e.message}`, loadingError: true }
-        })
+        this.setState(
+          {
+            statusMessage: { loadingData: false, loadingText: `Ошибка: ${e.message}`, loadingError: true }
+          },
+          this.updateTreeData
+        )
       );
   };
 
@@ -145,15 +164,21 @@ export class App extends React.PureComponent<any, IState> {
     entityAPI
       .fetchData()
       .then(erModel => {
-        this.setState({
-          statusMessage: { loadingData: false, loadingText: '', loadingError: false },
-          erModel
-        });
+        this.setState(
+          {
+            statusMessage: { loadingData: false, loadingText: '', loadingError: false },
+            erModel
+          },
+          this.updateTreeData
+        );
       })
       .catch(e =>
-        this.setState({
-          statusMessage: { loadingData: false, loadingText: `Ошибка: ${e.message}`, loadingError: true }
-        })
+        this.setState(
+          {
+            statusMessage: { loadingData: false, loadingText: `Ошибка: ${e.message}`, loadingError: true }
+          },
+          this.updateTreeData
+        )
       );
   };
 
@@ -179,12 +204,11 @@ export class App extends React.PureComponent<any, IState> {
     const entityLink: EntityLink = new EntityLink(newEntity, '', this.state.attributeList);
 
     this.setState({ entityLink }, this.updateTreeData);
-
-    // this.setState({ entityName }, this.updateTreeData);
   };
 
   private handleUnSelectEntity = () => {
-    // this.setState({ selectedEntity: undefined, selectedAttributes: [] }, this.updateTreeData);
+    if (!this.state.entityLink) return
+    this.setState({ entityLink: undefined }, this.updateTreeData);
   };
 
   private handleSelectAttribute = (parentAlias: string, name: string, checked: boolean) => {
@@ -202,7 +226,6 @@ export class App extends React.PureComponent<any, IState> {
 
   public render() {
     const list = !!this.state.erModel ? Object.keys(this.state.erModel.entities) : [];
-    const { treeData } = this.state;
     return (
       <div className="App">
         <main className="application-main" role="main">
@@ -221,7 +244,6 @@ export class App extends React.PureComponent<any, IState> {
               expression: { entityName: i.attribute.name, fieldName: i.attribute.name }
             }))}
           />
-          <ReactTree data={this.state.treeData} />
           {/* <FilterBox /> */}
         </main>
       </div>

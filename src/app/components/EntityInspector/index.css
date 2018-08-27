@@ -207,15 +207,23 @@ button:active {
   cursor: pointer;
 }
 
-
 .tree-node.dropdown {
   visibility: hidden;
 }
 
-.tree-node:hover {
+/* .tree-node:hover {
   background: #f2fdff;
 }
 
 .tree-node.dropdown:hover {
   visibility: inherit;
+} */
+
+.checkmark input{
+  height: 20px;
+  width: 20px;
+}
+
+.entity-item span {
+  margin-left: 5px;
 }
