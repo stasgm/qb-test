@@ -15,6 +15,7 @@ interface IProps {
   onLoadEntities: () => void;
   onSelectEntity: (id: string, checked: boolean) => void;
   onUnselectEntity: () => void;
+  onUpdateNode: (node: any) => void;
   onSelectAttribute: (parentAlias: string, name: string, checked: boolean) => void;
 }
 
@@ -31,6 +32,7 @@ export class EntityInspector extends React.PureComponent<IProps, IState> {
         {treeData ? (
           <ReactTree
             data={treeData}
+            onUpdate={this.props.onUpdateNode}
             onClear={this.props.onUnselectEntity}
             onSelectAttribute={this.props.onSelectAttribute}
           />

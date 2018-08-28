@@ -9,6 +9,7 @@ import { Filter } from '@src/app/components/EntityInspector/Filter';
 
 interface IProps {
   data: ITreeNode;
+  onUpdate: (node: any) => void;
   onClear: () => void;
   onSelectAttribute: (parentAlias: string, name: string, checked: boolean) => void;
 }
@@ -17,43 +18,44 @@ interface IState {
   filterText: string;
 }
 
+interface ITree {
+  loadData: (data: any) => void;
+  selectNode: (data: any) => void;
+  getChildNodes: () => object[];
+}
+
 export class ReactTree extends React.PureComponent<IProps, IState> {
+  public state: Readonly<IState> = {
+    filterText: ''
+  };
 
-  public state: Readonly<IState> ={
-    filterText:  '',
+  private tree: ITree | null = null;
+
+  private loadTree() {
+    if (!this.tree) return;
+    this.tree.loadData(this.props.data);
+    // Select the first node
+    this.tree.selectNode(this.tree.getChildNodes()[0]);
   }
-
-  private tree: {
-    loadData: (data: any) => void;
-    selectNode: (data: any) => void;
-    getChildNodes: () => object[];
-  } | null = null;
 
   public componentDidUpdate() {
-    if (!this.tree) return;
-    this.tree.loadData(this.props.data);
-    // Select the first node
-    this.tree.selectNode(this.tree.getChildNodes()[0]);
+    this.loadTree();
   }
 
-
   public componentDidMount() {
-    if (!this.tree) return;
-    this.tree.loadData(this.props.data);
-    // Select the first node
-    this.tree.selectNode(this.tree.getChildNodes()[0]);
+    this.loadTree();
   }
 
   public handleFilterChange = () => {
-    return ;
-  }
+    return;
+  };
 
   public handleFilterClear = () => {
-    return ;
-  }
+    return;
+  };
 
   public render() {
-    const { data } =  this.props
+    const { data, onUpdate } = this.props;
     return (
       <div className="component-container">
         <div className="entity-name">
@@ -67,72 +69,72 @@ export class ReactTree extends React.PureComponent<IProps, IState> {
           onChangeFilter={this.handleFilterChange}
           onClearFilter={this.handleFilterClear}
         />
-      <InfiniteTree
-        className="entity-list"
-        width="100%"
-        height={800}
-        rowHeight={28}
-        autoOpen={true}
-        data={this.props.data}
-        ref={(infiniteTree: any) => {
-          if (infiniteTree !== null) {
-            this.tree = infiniteTree.tree;
-          }
-        }}
-      >
-        {({ node, tree }: any) => {
-          // Determine the toggle state
-          let toggleState = '';
-          const hasChildren = node.hasChildren();
+        <InfiniteTree
+          className="entity-list"
+          width="100%"
+          height={600}
+          rowHeight={28}
+          autoOpen={true}
+          data={this.props.data}
+          ref={(infiniteTree: any) => {
+            if (infiniteTree !== null) {
+              this.tree = infiniteTree.tree;
+            }
+          }}
+        >
+          {({ node, tree }: any) => {
+            // Determine the toggle state
+            let toggleState = '';
+            const hasChildren = node.hasChildren();
 
-          if ((!hasChildren && node.loadOnDemand) || (hasChildren && !node.state.open)) {
-            toggleState = 'closed';
-          }
-          if (hasChildren && node.state.open) {
-            toggleState = 'opened';
-          }
+            if ((!hasChildren && node.loadOnDemand) || (hasChildren && !node.state.open)) {
+              toggleState = 'closed';
+            }
+            if (hasChildren && node.state.open) {
+              toggleState = 'opened';
+            }
 
-          return (
-            <TreeNode
-              className="entity-item"
-              {...{ selected: node.state.selected, depth: node.state.depth }}
-              onClick={(event: any) => {
-                tree.selectNode(node);
-              }}
-            >
-              <Toggler
-                state={toggleState}
-                onClick={() => {
-                  if (toggleState === 'closed') {
-                    tree.openNode(node);
-                  } else if (toggleState === 'opened') {
-                    tree.closeNode(node);
-                  }
-                }}
-              />
-              <Checkbox
-                className="checkmark"
-                checked={node.state.checked}
-                indeterminate={node.state.indeterminate}
-                onClick={(event: any) => {
-                  event.stopPropagation();
-                }}
-                onChange={(event: any) => {
-                  tree.checkNode(node);
-                  console.log('click');
-                  this.props.onSelectAttribute('', node.name, true)
-                  // onUpdate(node);
-                }}
-              />
-              <span>{node.name}</span>
-            </TreeNode>
-          );
-        }}
-      </InfiniteTree>
+            return renderTreeNode({ node, tree, toggleState, onUpdate });
+          }}
+        </InfiniteTree>
       </div>
     );
   }
 }
+
+const renderTreeNode = ({ node, tree, toggleState, onUpdate }: any) => (
+  <TreeNode
+    className="entity-item"
+    {...{ selected: node.state.selected, depth: node.state.depth }}
+    onClick={(event: any) => {
+      tree.selectNode(node);
+    }}
+  >
+    <Toggler
+      state={toggleState}
+      onClick={() => {
+        if (toggleState === 'closed') {
+          tree.openNode(node);
+        } else if (toggleState === 'opened') {
+          tree.closeNode(node);
+        }
+      }}
+    />
+    <Checkbox
+      className="checkmark"
+      checked={node.state.checked}
+      indeterminate={node.state.indeterminate}
+      onClick={(event: any) => {
+        event.stopPropagation();
+      }}
+      onChange={(event: any) => {
+        tree.checkNode(node);
+        onUpdate(node);
+      }}
+    />
+    <span>{node.name}</span>
+  </TreeNode>
+)
 
 const defaultRowHeight = 20;
 
@@ -142,7 +144,7 @@ const TreeNode = ({ selected, depth, ...divProps }: any) => (
     style={{
       cursor: 'default',
       position: 'relative',
-      lineHeight: `${defaultRowHeight - 2}px`,
+      lineHeight: `${defaultRowHeight}px`,
       background: selected ? '#deecfd' : 'transparent',
       border: selected ? '1px solid #06c' : '1px solid transparent',
       paddingLeft: `${depth * 20}px`
