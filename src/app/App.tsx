@@ -64,6 +64,9 @@ export class App extends React.PureComponent<any, IState> {
         id: attr.name,
         name: attr.name,
         children: [],
+        state: {
+          checked: !!Object.values(this.state.attributeList).filter(i => i.attribute.name === attr.name).length,
+        },
         loadOnDemand:
           EntityAttribute.isType(attr) &&
           !SetAttribute.isType(attr) &&
@@ -190,18 +193,6 @@ export class App extends React.PureComponent<any, IState> {
           { attributeList: this.state.attributeList.filter((i: EntityQueryField) => i.attribute.name !== node.name) },
           this.updateTreeData
         );
-
-    /* this.state.attributeList
-    const attr: IAttributeFilter = { entityAlias: parentAlias, fieldName: name };
-    if (checked) {
-      this.setState({ selectedAttributes: [...this.state.selectedAttributes, attr] }, this.updateTreeData);
-      return;
-    }
-    const newList: IAttributeFilter[] = this.state.selectedAttributes.filter(
-      i => !(i.fieldName === name && i.entityAlias === parentAlias)
-    ); */
-
-    // this.setState({ selectedAttributes: newList }, this.updateTreeData);
   };
 
   private handleUnSelectEntity = () => {
