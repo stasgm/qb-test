@@ -17,6 +17,7 @@ export interface ITreeNode {
   id: string;
   name: string;
   loadOnDemand?: boolean;
+  state: { checked: boolean };
   children?: ITreeNode[];
 }
 

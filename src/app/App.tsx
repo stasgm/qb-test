@@ -60,12 +60,14 @@ export class App extends React.PureComponent<any, IState> {
     } */
 
     const treeChildren: ITreeNode[] = Object.values(entityLink.entity.attributes).map((attr: Attribute) => {
+      const attrList = Object.values(this.state.attributeList);
+      const isChecked = !!attrList.find(i => i.attribute.name === attr.name);
       return {
         id: attr.name,
         name: attr.name,
         children: [],
         state: {
-          checked: !!Object.values(this.state.attributeList).filter(i => i.attribute.name === attr.name).length,
+          checked: isChecked,
         },
         loadOnDemand:
           EntityAttribute.isType(attr) &&
@@ -80,6 +82,7 @@ export class App extends React.PureComponent<any, IState> {
       treeData: {
         id: entityLink.entity.name,
         name: entityLink.entity.name,
+        state: {checked: false},
         children: treeChildren
       }
     });
